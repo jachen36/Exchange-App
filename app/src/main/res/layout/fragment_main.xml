@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment"
+    android:layout_height="match_parent"
+    tools:context=".MainActivityFragment"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:gravity="bottom">
 
         <TextView
             android:id="@+id/starter_currency"
             android:text="@string/start_currency"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
 
-        <EditText
-            android:id="@+id/start_currency_editText"
+        <!-- TODO: Try using autoFitTextView which seem pretty simply-->
+        <TextView
+            android:id="@+id/start_currency_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:gravity="end"
+            android:textSize="42sp"
             android:hint="@string/start_currency_hint"
             android:layout_weight="1" />
 
@@ -30,43 +34,49 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.5">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/exchange"/>
+            android:text="@string/exchange"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/bank_and_market"/>
+            android:text="@string/bank_and_market"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/exchange_difference"/>
+            android:text="@string/exchange_difference"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.5">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/end_currency"/>
+            android:text="@string/end_currency"
+            android:textSize="22sp"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -78,17 +88,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/temp_bank_rate"/>
+                android:text="@string/temp_bank_rate"
+                android:textSize="22sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/"/>
+                android:text="/"
+                android:textSize="22sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/temp_market_rate"/>
+                android:text="@string/temp_market_rate"
+                android:textSize="22sp"/>
 
         </LinearLayout>
 
@@ -97,22 +110,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/temp_difference_rate"/>
+            android:text="@string/temp_difference_rate"
+            android:textSize="22sp"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/end_currency_editText"
+        android:id="@+id/end_currency_textview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:maxLines="1"
-        android:text="111111111111111111111"
-        android:gravity="right" />
+        android:textSize="42sp"
+        android:text="111111111111111"
+        android:gravity="bottom|right" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="6"
         android:orientation="vertical">
 
         <LinearLayout
@@ -121,14 +137,15 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <!-- TODO: Nested weights are bad for performance so try relativelayout-->
+            <!-- TODO: Nested weights are bad for performance so try relativelayout
+                 TODO: Also try using android studio's design tool to see how they program the layout-->
             <Button
                 android:id="@+id/button_seven"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_seven"
-                android:background="@drawable/button_number_selector"/>
+                android:background="@drawable/button_number_selector" />
 
             <Button
                 android:id="@+id/button_eight"
@@ -136,21 +153,24 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_eight"
-                android:background="@drawable/button_number_selector"/>
+                android:background="@drawable/button_number_selector"
+                android:onClick="addEight"/>
 
             <Button
                 android:id="@+id/button_nine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_nine"/>
+                android:text="@string/button_nine"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_clear"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_clear"/>
+                android:text="@string/button_clear"
+                android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
 
@@ -165,28 +185,32 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_four"/>
+                android:text="@string/button_four"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_five"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_five"/>
+                android:text="@string/button_five"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_six"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_six"/>
+                android:text="@string/button_six"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_back"/>
+                android:text="@string/button_back"
+                android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
 
@@ -201,28 +225,32 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_one"/>
+                android:text="@string/button_one"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_two"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_two"/>
+                android:text="@string/button_two"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_three"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_three"/>
+                android:text="@string/button_three"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_switch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_switch"/>
+                android:text="@string/button_switch"
+                android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
 
@@ -237,21 +265,24 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="@string/button_zero"/>
+                android:text="@string/button_zero"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_decimal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_decimal"/>
+                android:text="@string/button_decimal"
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_equal"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_equal"/>
+                android:text="@string/button_equal"
+                android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
 
