@@ -126,6 +126,7 @@
         android:gravity="bottom|right" />
 
     <LinearLayout
+        android:id="@+id/button_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
@@ -153,8 +154,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_eight"
-                android:background="@drawable/button_number_selector"
-                android:onClick="addEight"/>
+                android:background="@drawable/button_number_selector"/>
 
             <Button
                 android:id="@+id/button_nine"
