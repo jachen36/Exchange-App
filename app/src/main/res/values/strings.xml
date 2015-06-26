@@ -3,19 +3,20 @@
 
     <!--Starting currency-->
     <string name="start_currency">USD:</string>
-    <string name="start_currency_hint">100,200,300,400,500,600,700</string>
+    <string name="start_currency_hint">0</string>
 
 
     <!--Ending currency-->
-    <string name="exchange">Exchange</string>
     <string name="bank_and_market">Bank/Market</string>
     <string name="exchange_difference">Difference</string>
 
     <string name="end_currency">Peso</string>
     <string name="temp_bank_rate">14</string>
+    <string name="rate_separator">/</string>
     <string name="temp_market_rate">15</string>
     <string name="temp_difference_rate">-7%</string>
 
+    <string name="end_currency_hint">0</string>
 
 
     <!--Button's text-->

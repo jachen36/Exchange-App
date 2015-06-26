@@ -108,12 +108,19 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 break;
             case (R.id.button_decimal):
                 if (!decimalPresent){
-                    insert("A");
-                    decimalPresent = true;
+                    insertDot();
                 }
                 break;
             case (R.id.button_clear):
                 clear();
+                break;
+            case (R.id.button_back):
+                backspace();
+                break;
+            // TODO: Finish function for equal and switch
+            case (R.id.button_switch):
+                break;
+            case (R.id.button_equal):
                 break;
             default:
                 Log.v(LOG_TAG, "The button was not recognized on the onClick function. Button id " + v.getId());
@@ -128,9 +135,34 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         decimalPresent = false;
     }
 
+    public void backspace(){
+        CharSequence textView = mStart_Currency_TextView.getText();
+        int length = textView.length();
+        if (length == 1){
+            mStart_Currency_TextView.setText("0");
+        } else {
+            mStart_Currency_TextView.setText(textView.subSequence(0, length-1));
+            if (textView.charAt(length-1) == '.'){
+                decimalPresent = false;
+            }
+        }
+    }
+
+    // Insert the number pressed
     public void insert(String num){
         // TODO: Have to remove the leading zero when it starts
-        mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + num);
+        String textView = mStart_Currency_TextView.getText().toString();
+        if (textView.length() == 1 && textView.equals("0")){
+            mStart_Currency_TextView.setText(num);
+        } else {
+            mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + num);
+        }
+    }
+
+    // Inserts the decimal point and change decimalPresent to true
+    public void insertDot(){
+        decimalPresent = true;
+        mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + ".");
     }
 
 
