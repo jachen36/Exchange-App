@@ -7,13 +7,16 @@
 
 
     <!--Ending currency-->
-    <string name="bank_and_market">Bank/Market</string>
-    <string name="exchange_difference">Difference</string>
+    <string name="bank">Bank</string>
+    <string name="market">Market</string>
+    <string name="exchange_rate">Rate</string>
+    <string name="rate">#</string>
 
     <string name="end_currency">Peso</string>
     <string name="temp_bank_rate">14</string>
     <string name="rate_separator">/</string>
     <string name="temp_market_rate">15</string>
+    <string name="rate_direction">ic_arrow_drop_up_black_18dp</string>
     <string name="temp_difference_rate">-7%</string>
 
     <string name="end_currency_hint">0</string>

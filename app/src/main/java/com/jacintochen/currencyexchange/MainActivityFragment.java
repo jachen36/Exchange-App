@@ -1,12 +1,18 @@
 package com.jacintochen.currencyexchange;
 
+import android.net.ParseException;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -40,6 +46,16 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mNumberFormatter = new DecimalFormat("#,###.##");
 
         initializeButtonListener(rootView);
+
+        EditText bank_rate = (EditText) rootView.findViewById(R.id.bank_rate_edittext);
+        bank_rate.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count){}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+
+            public void afterTextChanged(Editable s){
+                updateRatePercentage();
+            }
+        });
 
         return rootView;
     }
@@ -150,7 +166,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Insert the number pressed
     public void insert(String num){
-        // TODO: Have to remove the leading zero when it starts
         String textView = mStart_Currency_TextView.getText().toString();
         if (textView.length() == 1 && textView.equals("0")){
             mStart_Currency_TextView.setText(num);
@@ -163,6 +178,45 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void insertDot(){
         decimalPresent = true;
         mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + ".");
+    }
+
+    public void updateRatePercentage(){
+        EditText bank_rate = (EditText) getActivity().findViewById(R.id.bank_rate_edittext);
+        EditText market_rate = (EditText) getActivity().findViewById(R.id.market_rate_edittext);
+
+        String bank = bank_rate.getText().toString();
+        String market = market_rate.getText().toString();
+
+        // Make sure that the input is correct before parsing
+        if (bank.length() == 0 || market.length() == 0){
+            return;
+        } else if (bank.equals(".") || market.equals(".")){
+            return;
+        }
+
+
+        try {
+            // TODO: I need to understand the pattern a little more.
+            DecimalFormat rate_formatter = new DecimalFormat("@######");
+            Double bank_double = rate_formatter.parse(bank).doubleValue();
+            Double market_double = rate_formatter.parse(market).doubleValue();
+
+            // Make sure that app is not dividing by zero by exiting function
+            if (bank_double == 0 || market_double == 0){
+                return;
+            }
+
+            // TODO: finish function by calculating percentage. Need a different Decimal Formatter. Maybe max two sig fig?
+
+
+
+        } catch (ParseException par) {
+            Log.v(LOG_TAG, "Parsing error. " + par);
+        } catch (Exception ex){
+            // TODO: The exception is too generic. Change it more specific
+            Log.v(LOG_TAG, "An error with updateRatePercentage. " + ex);
+        }
+
     }
 
 

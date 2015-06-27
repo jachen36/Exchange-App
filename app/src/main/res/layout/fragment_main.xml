@@ -10,23 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="1"
-        android:gravity="bottom">
+        android:layout_weight="1.25">
 
         <TextView
             android:id="@+id/starter_currency"
             android:text="@string/start_currency"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:textSize="30sp"/>
 
         <!-- TODO: Try using autoFitTextView which seem pretty simply-->
         <TextView
             android:id="@+id/start_currency_textview"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:maxLines="1"
-            android:gravity="end"
+            android:gravity="bottom|right"
             android:textSize="42sp"
             android:hint="@string/start_currency_hint"
             android:layout_weight="1" />
@@ -36,67 +36,85 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:gravity="center">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/bank_and_market"
+            android:text="@string/bank"
             android:textSize="16sp"/>
 
-        <TextView
+
+        <!-- TODO: Remove edittext line by providing a transparent background -->
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:text="@string/temp_bank_rate"-->
+            <!--android:textSize="22sp"-->
+            <!--android:gravity="center"/>-->
+
+        <EditText
+            android:id="@+id/bank_rate_edittext"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="@string/rate"
+            android:inputType="numberDecimal"
+            android:maxLength="7"
+            android:textSize="20sp"
             android:gravity="center"
-            android:text="@string/exchange_difference"
+            android:padding="0dp"
+            android:selectAllOnFocus="true"
+            android:cursorVisible="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/market"
             android:textSize="16sp"/>
 
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--android:hint="@string/rate"-->
+            <!--android:textSize="20sp"-->
+            <!--android:gravity="center"-->
+            <!--android:maxLength="7"-->
+            <!--android:editable="true"-->
+            <!--android:inputType="numberDecimal"-->
+            <!--android:focusableInTouchMode="true"/>-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/market_rate_edittext"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/temp_bank_rate"
-                android:textSize="22sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rate_separator"
-                android:textSize="22sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/temp_market_rate"
-                android:textSize="22sp"/>
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="@string/rate"
+            android:inputType="numberDecimal"
+            android:maxLength="7"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:padding="0dp"
+            android:selectAllOnFocus="true"
+            android:cursorVisible="false"/>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exchange_rate"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/exchange_percentage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_weight="1.5"
             android:text="@string/temp_difference_rate"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -104,7 +122,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1.25"
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,7 +142,6 @@
             android:text="@string/end_currency_hint"
             android:gravity="bottom|end" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/button_LinearLayout"
