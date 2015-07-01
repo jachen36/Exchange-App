@@ -1,134 +1,124 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.jacintochen.currencyexchange.SellActivityFragment">
+    tools:context="com.jacintochen.currencyexchange.SellActivityFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Add something that would lose focus when done is pressed-->
     <!-- TODO: have custom edittext box maybe a dark grey box -->
-    <!-- Line 1 -->
-    <TextView
-        android:id="@+id/currency_1_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sell_activity_line_margin"
-        android:layout_marginBottom="@dimen/sell_activity_line_margin"
-        android:layout_alignParentLeft="true"
-        android:text="@string/currency_1"
-        android:textSize="22sp"/>
 
-    <ImageView
-        android:id="@+id/currency_1_hint_image"
-        android:layout_width="wrap_content"
+    <!-- Line 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/currency_1_title"
-        android:src="@drawable/ic_more_black_36dp"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/currency_1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_1"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
 
     <!-- Line 2 -->
     <EditText
         android:id="@+id/currency_1_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/sell_activity_line_margin"
-        android:layout_marginBottom="@dimen/sell_activity_line_margin"
         android:hint="@string/temp_hint"
-        android:layout_below="@id/currency_1_title"
         android:gravity="right"
         android:textSize="22sp"/>
 
     <!-- Line 3 -->
-    <TextView
-        android:id="@+id/buy_rate_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/buy_rate"
-        android:layout_below="@id/currency_1_edittext"
-        android:textSize="22sp"/>
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/buy_rate_hint_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/currency_1_edittext"
-        android:layout_toRightOf="@id/buy_rate_title"
-        android:src="@drawable/ic_more_black_36dp"/>
-    
-    <EditText
-        android:id="@+id/buy_rate_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/temp_hint"
-        android:layout_below="@id/currency_1_edittext"
-        android:layout_toRightOf="@id/buy_rate_hint_image"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:textSize="22sp"/>
+        <TextView
+            android:id="@+id/buy_rate_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buy_rate"
+            android:textSize="22sp"/>
+
+        <EditText
+            android:id="@+id/buy_rate_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/temp_hint"
+            android:gravity="right"
+            android:textSize="22sp"/>
+    </LinearLayout>
+
+
 
     <!-- Line 4 -->
-    <TextView
-        android:id="@+id/sell_rate_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sell_rate"
-        android:layout_below="@id/buy_rate_edittext"
-        android:textSize="22sp"/>
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/sell_rate_hint_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/buy_rate_edittext"
-        android:layout_toRightOf="@id/sell_rate_title"
-        android:src="@drawable/ic_more_black_36dp"/>
+        <TextView
+            android:id="@+id/sell_rate_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sell_rate"
+            android:textSize="22sp"/>
 
-    <EditText
-        android:id="@+id/sell_rate_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/temp_hint"
-        android:layout_below="@id/buy_rate_edittext"
-        android:layout_toRightOf="@id/sell_rate_hint_image"
-        android:layout_alignParentRight="true"
-        android:gravity="right"
-        android:textSize="22sp"/>
+        <EditText
+            android:id="@+id/sell_rate_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/temp_hint"
+            android:gravity="right"
+            android:textSize="22sp"/>
+    </LinearLayout>
+
 
     <!-- Line 5 -->
-    <TextView
-        android:id="@+id/currency_2_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sell_rate_edittext"
-        android:layout_alignParentLeft="true"
-        android:text="@string/currency_2"
-        android:textSize="22sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/currency_2_hint_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/currency_2_title"
-        android:layout_below="@id/sell_rate_edittext"
-        android:src="@drawable/ic_more_black_36dp"/>
+        <TextView
+            android:id="@+id/currency_2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency_2"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
 
     <!-- Line 6 -->
     <TextView
         android:id="@+id/currency_2_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/temp_hint"
-        android:layout_below="@id/currency_2_title"
         android:gravity="right"
+        android:text="@string/temp_hint"
         android:textSize="22sp"/>
 
     <!-- Line 7 -->
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/currency_2_textview"
-        android:text="@string/selling_cost"
-        android:textSize="22sp"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selling_cost"
+            android:textSize="22sp"/>
+
+
+    </LinearLayout>
+
 
     <!-- Line end -->
     <Button
@@ -136,7 +126,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/calculate"
-        android:layout_alignParentBottom="true"
         android:textSize="22sp"/>
 
-</RelativeLayout>
+</LinearLayout>
