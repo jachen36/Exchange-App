@@ -5,19 +5,22 @@
     tools:context=".MainActivityFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Add padding to calculator text-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="1.25">
+        android:layout_weight="1.1"
+        android:layout_marginLeft="@dimen/main_activity_side_margin"
+        android:layout_marginRight="@dimen/main_activity_side_margin">
 
+        <!--TODO: When I enter a database try using spinner to allow user to select which currency to use.-->
         <TextView
             android:id="@+id/starter_currency"
             android:text="@string/start_currency"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|left"
             android:textSize="30sp"/>
 
         <!-- TODO: Try using autoFitTextView which seem pretty simply-->
@@ -36,8 +39,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:gravity="center">
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/bank_market_rate_margin"
+        android:layout_marginBottom="@dimen/bank_market_rate_margin"
+        android:layout_marginLeft="@dimen/main_activity_side_margin"
+        android:layout_marginRight="@dimen/main_activity_side_margin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,6 +54,7 @@
 
 
         <!-- TODO: Remove edittext line by providing a transparent background -->
+        <!-- TODO: Try to remove focus from the text after done is pressed -->
         <!--<TextView-->
             <!--android:layout_width="0dp"-->
             <!--android:layout_height="wrap_content"-->
@@ -95,7 +103,7 @@
             android:hint="@string/rate"
             android:inputType="numberDecimal"
             android:maxLength="7"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:gravity="center"
             android:padding="0dp"
             android:selectAllOnFocus="true"
@@ -105,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/exchange_rate"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/exchange_percentage"
@@ -113,7 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:text="@string/temp_difference_rate"
-            android:textSize="22sp"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
             android:gravity="center"/>
 
     </LinearLayout>
@@ -122,14 +131,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.25"
-        android:gravity="center_vertical">
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/main_activity_side_margin"
+        android:layout_marginRight="@dimen/main_activity_side_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/end_currency"
+            android:gravity="bottom"
             android:textSize="30sp"/>
 
         <TextView
@@ -140,7 +150,7 @@
             android:maxLines="1"
             android:textSize="42sp"
             android:text="@string/end_currency_hint"
-            android:gravity="bottom|end" />
+            android:gravity="bottom|right" />
     </LinearLayout>
 
     <LinearLayout
@@ -195,7 +205,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:orientation="horizontal">
 
             <Button

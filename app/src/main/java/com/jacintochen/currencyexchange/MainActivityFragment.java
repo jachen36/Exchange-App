@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,8 +24,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     private TextView mStart_Currency_TextView;
     private TextView mEnd_Currency_TextView;
+    private EditText mBank_Rate;
     private DecimalFormat mNumberFormatter;
     private boolean decimalPresent;
+    private boolean legalRateInput;
+    private boolean equalWasPressed;
 
     public MainActivityFragment() {
     }
@@ -41,18 +41,38 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mStart_Currency_TextView = (TextView) rootView.findViewById(R.id.start_currency_textview);
         mEnd_Currency_TextView = (TextView) rootView.findViewById(R.id.end_currency_textview);
         decimalPresent = false;
+        // TODO: Once I finished the savedState, legalRateInput might need to be changed to a different location
+        legalRateInput = false;
+        equalWasPressed = false;
 
-        //TODO: Allow user to add more than 2 decimal points
+        // TODO: I might not need this decimalFormat if I am not using it for the start_currency
         mNumberFormatter = new DecimalFormat("#,###.##");
 
         initializeButtonListener(rootView);
 
-        EditText bank_rate = (EditText) rootView.findViewById(R.id.bank_rate_edittext);
-        bank_rate.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count){}
-            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+        // TODO: Figure out how to remove focus after done is pressed. Probably use a dummy layout that is focusable
+        mBank_Rate = (EditText) rootView.findViewById(R.id.bank_rate_edittext);
+        mBank_Rate.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-            public void afterTextChanged(Editable s){
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                updateRatePercentage();
+            }
+        });
+
+        EditText market_rate = (EditText) rootView.findViewById(R.id.market_rate_edittext);
+        market_rate.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
                 updateRatePercentage();
             }
         });
@@ -133,10 +153,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             case (R.id.button_back):
                 backspace();
                 break;
-            // TODO: Finish function for equal and switch
+            // TODO: Finish function for switch
             case (R.id.button_switch):
                 break;
             case (R.id.button_equal):
+                equal();
                 break;
             default:
                 Log.v(LOG_TAG, "The button was not recognized on the onClick function. Button id " + v.getId());
@@ -149,6 +170,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mStart_Currency_TextView.setText("0");
         mEnd_Currency_TextView.setText("0");
         decimalPresent = false;
+        equalWasPressed = false;
     }
 
     public void backspace(){
@@ -166,6 +188,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Insert the number pressed
     public void insert(String num){
+        // After equal has been pressed, the next button should reset the calculator
+        if (equalWasPressed){clear();}
+
         String textView = mStart_Currency_TextView.getText().toString();
         if (textView.length() == 1 && textView.equals("0")){
             mStart_Currency_TextView.setText(num);
@@ -180,63 +205,105 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + ".");
     }
 
-    public void updateRatePercentage(){
-        EditText bank_rate = (EditText) getActivity().findViewById(R.id.bank_rate_edittext);
-        EditText market_rate = (EditText) getActivity().findViewById(R.id.market_rate_edittext);
+    public void equal(){
+        if (!equalWasPressed){
+            String result = "ERROR";
 
-        String bank = bank_rate.getText().toString();
-        String market = market_rate.getText().toString();
+            if (legalRateInput){
+                try {
+                    DecimalFormat formatter = new DecimalFormat("#.######");
 
-        // Make sure that the input is correct before parsing
-        if (bank.length() == 0 || market.length() == 0){
-            return;
-        } else if (bank.equals(".") || market.equals(".")){
-            return;
-        }
+                    Double start = formatter.parse(mStart_Currency_TextView.getText().toString()).doubleValue();
+                    Double rate = formatter.parse(mBank_Rate.getText().toString()).doubleValue();
+                    Double end = start * rate;
 
+                    // TODO: Need to make a tester that prevent string that are too large for screen or change the decimal to use E
+                    formatter.applyPattern("#,###.##");
+                    result = formatter.format(end);
+                    equalWasPressed = true;
 
-        try {
-            // TODO: I need to understand the pattern a little more.
-            DecimalFormat rate_formatter = new DecimalFormat("@######");
-            Double bank_double = rate_formatter.parse(bank).doubleValue();
-            Double market_double = rate_formatter.parse(market).doubleValue();
+                } catch (ParseException par){
+                    Log.v(LOG_TAG, "Parsing error during calculating the end_currency. " + par);
+                } catch (Exception ex){
+                    // TODO: The equal exception is too generic. Change it more specific
+                    Log.v(LOG_TAG, "An error with equal. " + ex);
+                }
 
-            // Make sure that app is not dividing by zero by exiting function
-            if (bank_double == 0 || market_double == 0){
-                return;
+            } else {
+                // equalWasPressed is false in this case because the user probably wouldn't like
+                // to reset what they've enter in the start_currency
+                result = "Enter Rate";
             }
 
-            // TODO: finish function by calculating percentage. Need a different Decimal Formatter. Maybe max two sig fig?
-
-
-
-        } catch (ParseException par) {
-            Log.v(LOG_TAG, "Parsing error. " + par);
-        } catch (Exception ex){
-            // TODO: The exception is too generic. Change it more specific
-            Log.v(LOG_TAG, "An error with updateRatePercentage. " + ex);
+            mEnd_Currency_TextView.setText(result);
         }
-
     }
 
+    public void updateRatePercentage(){
+        // Text that appears when either bank or market is empty
+        String result = "---";
+        int textColor = getResources().getColor(R.color.blue);
+        legalRateInput = false;
 
-    public void appendNumberHelper(String num){
-        String number = mStart_Currency_TextView.getText().toString();
-        String result;
-        try {
-            number = Double.toString(mNumberFormatter.parse(number).doubleValue());
-            number += num;
-            Double d = Double.parseDouble(number);
+        EditText market_rate = (EditText) getActivity().findViewById(R.id.market_rate_edittext);
+        TextView rate_textView = (TextView) getActivity().findViewById(R.id.exchange_percentage);
 
-            result = mNumberFormatter.format(d);
-        } catch (Exception ex){
-            Log.v(LOG_TAG, "The parsing caused a problem!");
-            return;
+        String bank = mBank_Rate.getText().toString();
+        String market = market_rate.getText().toString();
+
+        // Make sure there are no illegal input such as empty or just a decimal point
+        if (bank.length() == 0 || market.length() == 0){
+
+        } else if (bank.equals(".") || market.equals(".")){
+
+        } else {
+
+            try {
+                DecimalFormat rate_formatter = new DecimalFormat("#.######");
+                Double bank_double = rate_formatter.parse(bank).doubleValue();
+                Double market_double = rate_formatter.parse(market).doubleValue();
+
+                // Make sure both numbers are greater than zero
+                if (bank_double > 0 && market_double > 0){
+                    // Calculate the percent difference in the exchange rate between bank and market
+                    Double rate_difference = (bank_double/market_double) - 1;
+
+                    // Determine the text color
+                    if (rate_difference >= 0 ){
+                        textColor = getResources().getColor(R.color.green);
+                    } else if (rate_difference < 0){
+                        textColor = getResources().getColor(R.color.red);
+                    }
+
+                    // Set maximum significant digits to 2 and minimum to 1 while converting it to percent
+                    rate_formatter.applyPattern("@#%");
+
+                    // TODO: find a way to break out of the try once high and low is determine.
+                    if (rate_difference > 0.994){
+                        result = "HIGH";
+                    } else if (rate_difference < -0.994){
+                        result = "LOW";
+                    } else {
+                        // Set maximum significant digits to 2 and minimum to 1 while converting it to percent
+                        rate_formatter.applyPattern("@#%");
+
+                        result = rate_formatter.format(rate_difference);
+                    }
+                    legalRateInput = true;
+                }
+
+            } catch (ParseException par) {
+                Log.v(LOG_TAG, "Parsing error. " + par);
+            } catch (Exception ex){
+                // TODO: The exception is too generic. Change it more specific
+                Log.v(LOG_TAG, "An error with updateRatePercentage. " + ex);
+            }
         }
 
-        if (result != null){
-            mStart_Currency_TextView.setText(result);
-        }
+        // Set text and textColor to exchange_percentage textview
+        rate_textView.setText(result);
+        rate_textView.setTextColor(textColor);
+
     }
 
 }
