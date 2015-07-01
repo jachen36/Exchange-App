@@ -54,7 +54,8 @@
     <string name="difference_buy_sell">Difference</string>
     <string name="temp_hint">Temp hint</string>
     <string name="calculate">Calculate</string>
-    <string name="selling_cost">It cost you 18 dollar to sell</string>
+    <string name="selling_cost">Cost</string>
+    <string name="selling_cost_text">$$$$$</string>
 
 
 </resources>
