@@ -17,7 +17,7 @@
     <string name="rate_separator">/</string>
     <string name="temp_market_rate">15</string>
     <string name="rate_direction">ic_arrow_drop_up_black_18dp</string>
-    <string name="temp_difference_rate">-7%</string>
+    <string name="temp_difference_rate">--</string>
 
     <string name="end_currency_hint">0</string>
 
