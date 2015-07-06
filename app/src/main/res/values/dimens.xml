@@ -7,5 +7,5 @@
     <dimen name="bank_market_rate_margin">5dp</dimen>
 
     <!-- Sell Activity dimen -->
-    <dimen name="sell_activity_line_margin">5dp</dimen>
+    <dimen name="sell_activity_marginTop">10dp</dimen>
 </resources>

@@ -20,4 +20,6 @@ public class SellActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sell, container, false);
     }
+
+    //TODO: Remove the menu on this activity if I don't have any setting for this
 }
