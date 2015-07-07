@@ -1,5 +1,6 @@
 package com.jacintochen.currencyexchange;
 
+import android.content.Intent;
 import android.net.ParseException;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -106,6 +110,30 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         btn_parent.findViewById(R.id.button_back).setOnClickListener(this);
         btn_parent.findViewById(R.id.button_switch).setOnClickListener(this);
         btn_parent.findViewById(R.id.button_equal).setOnClickListener(this);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.menu_sell:
+                Intent intent = new Intent(getActivity(), SellActivity.class);
+                // TODO: more advance would be to take the current currency and put it in the sell fragment
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
