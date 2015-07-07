@@ -45,4 +45,8 @@ public final class ExchangeContract implements BaseColumns{
     public static Uri buildExchangeUri(long id){
         return ContentUris.withAppendedId(CONTENT_URI, id);
     }
+
+    public static String getIdExchangeUri(Uri uri){
+        return Long.toString(ContentUris.parseId(uri));
+    }
 }

@@ -1,7 +1,7 @@
 package com.jacintochen.currencyexchange.data;
 
+import android.annotation.TargetApi;
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -13,8 +13,8 @@ import android.net.Uri;
  */
 public class ExchangeProvider extends ContentProvider {
 
-    static final int list_exchange = 100;
-    static final int item_exchange = 101;
+    static final int LIST_EXCHANGE = 100;
+    static final int ITEM_EXCHANGE = 101;
 
 
     // The URI Matcher used by this content provider
@@ -26,8 +26,8 @@ public class ExchangeProvider extends ContentProvider {
     private static UriMatcher buildUriMatcher(){
         UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        matcher.addURI(ExchangeContract.CONTENT_AUTHORITY, "exchange", 0);
-        matcher.addURI(ExchangeContract.CONTENT_AUTHORITY, "exchange/#", 1);
+        matcher.addURI(ExchangeContract.CONTENT_AUTHORITY, "exchange", LIST_EXCHANGE);
+        matcher.addURI(ExchangeContract.CONTENT_AUTHORITY, "exchange/#", ITEM_EXCHANGE);
 
         return matcher;
     }
@@ -36,7 +36,6 @@ public class ExchangeProvider extends ContentProvider {
     public boolean onCreate() {
         mOpenHelper = new ExchangeDbHelper(getContext());
         //TODO: Should I add an if function to see if a writeable database is return?
-        // TODO: Should I just return a writable database instead of the helper class?
         return true;
     }
 
@@ -57,25 +56,73 @@ public class ExchangeProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri arg0, String[] arg1, String arg2, String[] arg3, String arg4){
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         //TODO: Provider query
-        return null;
+        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+
+        Cursor retCursor;
+        switch(match){
+            case LIST_EXCHANGE:
+                retCursor = db.query(
+                        ExchangeContract.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null, null, sortOrder);
+                break;
+            case ITEM_EXCHANGE:
+                selection = ExchangeContract._ID + "=?";
+                String[] arg = new String[]{ExchangeContract.getIdExchangeUri(uri)};
+
+                retCursor =  db.query(
+                        ExchangeContract.TABLE_NAME,
+                        projection,
+                        selection,
+                        arg,
+                        null, null,sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        // Set the notification URI for this cursor. Our loader will
+        // use this URI to watch for any change to our data,
+        // and if there data change the loader will automatically refresh.
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Override
-    public int update(Uri arg0, ContentValues arg1, String arg2, String[] arg3){
-        //TODO: Provider update
-        return 0;
+    public int update(Uri uri, ContentValues value, String selection, String[] selectionArgs){
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        selection = ExchangeContract._ID + "=?";
+        String[] arg = new String[]{ExchangeContract.getIdExchangeUri(uri)};
+
+        int count = db.update(ExchangeContract.TABLE_NAME, value, selection, arg);
+
+        if (count > 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return count;
     }
 
 
     @Override
-    public int delete(Uri arg0, String arg1, String[] arg2){
-        //TODO: Provider delete
-        //TODO: Find in sunshine app where delete is used. believe this is during update/referesh
-        //TODO: also find when update is used in sunshine app.
-        //TODO: find out what happens when sunshine weather updates. are the weather replaced since they have the same date.
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs){
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        selection = ExchangeContract._ID + "=?";
+        String[] arg = new String[]{ExchangeContract.getIdExchangeUri(uri)};
+
+        int count = db.delete(ExchangeContract.TABLE_NAME, selection, arg);
+
+        if (count > 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return count;
     }
 
     @Override
@@ -84,9 +131,9 @@ public class ExchangeProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         switch(match){
-            case list_exchange:
+            case LIST_EXCHANGE:
                 return ExchangeContract.EXCHANGE_DIR_TYPE;
-            case item_exchange:
+            case ITEM_EXCHANGE:
                 return ExchangeContract.EXCHANGE_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknow uri: " + uri);
@@ -94,6 +141,13 @@ public class ExchangeProvider extends ContentProvider {
     }
 
 
-
-
+    //TODO: put shutdown method here
+    // You do not need to call this method. This is a method specifically to assist the testing
+    // framework in running smoothly. You can read more at:
+    @Override
+    @TargetApi(11)
+    public void shutdown() {
+        mOpenHelper.close();
+        super.shutdown();
+    }
 }
