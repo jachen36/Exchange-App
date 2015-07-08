@@ -128,9 +128,14 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.menu_sell:
-                Intent intent = new Intent(getActivity(), SellActivity.class);
+                Intent sell = new Intent(getActivity(), SellActivity.class);
                 // TODO: more advance would be to take the current currency and put it in the sell fragment
-                startActivity(intent);
+                startActivity(sell);
+                return true;
+            case R.id.menu_add:
+                //TODO: check out why dummy book makes it so complicated with interface editTask
+                Intent add = new Intent(getActivity(), AddActivity.class);
+                startActivity(add);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -8,4 +8,7 @@
 
     <!-- Sell Activity dimen -->
     <dimen name="sell_activity_marginTop">10dp</dimen>
+
+    <!-- Add Activity & Fragement dimen -->
+    <dimen name="add_fragment_marginTop">15dp</dimen>
 </resources>
