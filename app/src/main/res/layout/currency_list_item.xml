@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--TODO: add android:foreground or background selectableItembackground-->
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_view_height"
+    android:layout_marginTop="@dimen/card_view_half_spacing"
+    android:layout_marginBottom="@dimen/card_view_half_spacing"
+    card_view:cardCornerRadius="0dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/card_view_currency_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:text="@string/temp_currency"/>
+
+        <!--TODO: Change the imageview to a switch icon-->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_more_black_36dp"/>
+
+        <TextView
+            android:id="@+id/card_view_currency_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:text="@string/temp_currency"/>
+
+    </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>
+

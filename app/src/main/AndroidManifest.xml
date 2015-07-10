@@ -33,6 +33,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jacintochen.currencyexchange.MainActivity" />
         </activity>
+        <activity
+            android:name=".CurrencyListActivity"
+            android:label="@string/title_activity_currency_list"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jacintochen.currencyexchange.MainActivity" />
+        </activity>
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.ExchangeProvider"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>

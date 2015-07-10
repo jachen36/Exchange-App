@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Currency Exchange</string>
 
+    <string name="content_authority">com.jacintochen.currencyexchange.data.ExchangeProvider</string>
     <!--Starting currency-->
     <string name="start_currency">USD:</string>
     <string name="start_currency_hint">0</string>
@@ -56,6 +57,10 @@
     <string name="selling_cost">Cost</string>
     <string name="selling_cost_result">$$$$$</string>
 
+    <!-- Saved currency list string -->
+    <string name="menu_saved">Saved Currency List</string>
+    <!-- Card view strings -->
+    <string name="temp_currency">USD</string>
 
     <!-- Add Activity & Fragment strings -->
     <string name="menu_add">Add New Exchange</string>
@@ -66,5 +71,11 @@
     <string name="add_market_rate">Market Rate</string>
     <string name="add_add_button">Add</string>
     <string name="add_cancel_button">Cancel</string>
+    <string name="title_activity_currency_list">Currency List</string>
+    <string name="add_saved_message">Saved Successful</string>
+
+
+
+
 
 </resources>

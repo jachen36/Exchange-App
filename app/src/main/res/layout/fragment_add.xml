@@ -16,6 +16,7 @@
         android:textSize="22sp"/>
 
     <EditText
+        android:id="@+id/add_currency_1_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="22sp"
@@ -29,6 +30,7 @@
         android:layout_marginTop="@dimen/add_fragment_marginTop"/>
 
     <EditText
+        android:id="@+id/add_currency_2_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="22sp"
@@ -50,6 +52,7 @@
             android:textSize="22sp"/>
 
         <EditText
+            android:id="@+id/add_bank_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,6 +75,7 @@
             android:textSize="22sp"/>
 
         <EditText
+            android:id="@+id/add_market_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -87,12 +91,14 @@
         android:layout_marginTop="@dimen/add_fragment_marginTop">
 
         <Button
+            android:id="@+id/add_submit_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_add_button"
             android:textSize="22sp"/>
         <Button
+            android:id="@+id/add_cancel_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -11,4 +11,10 @@
 
     <!-- Add Activity & Fragement dimen -->
     <dimen name="add_fragment_marginTop">15dp</dimen>
+
+
+    <!-- Card view dimen -->
+    <dimen name="card_view_height">80dp</dimen>
+    <dimen name="card_view_half_spacing">2dp</dimen>
+    <dimen name="card_view_elevation">2dp</dimen>
 </resources>
