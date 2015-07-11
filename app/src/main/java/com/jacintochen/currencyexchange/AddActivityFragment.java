@@ -54,7 +54,7 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
             case R.id.add_submit_button:
                 save();
                 // TODO: If possible add a toast to tell user saved is complete. Maybe make a custom view!
-//                getActivity().finish();
+                getActivity().finish();
                 break;
             case R.id.add_cancel_button:
                 // Exit current activity

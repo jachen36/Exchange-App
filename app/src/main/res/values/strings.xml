@@ -59,8 +59,11 @@
 
     <!-- Saved currency list string -->
     <string name="menu_saved">Saved Currency List</string>
+    <string name="title_activity_currency_list">Exchange List</string>
+    <string name="list_add_button_title">Add Exchange</string>
     <!-- Card view strings -->
-    <string name="temp_currency">USD</string>
+    <string name="alertdialog_delete">Delete Exchange?</string>
+    <string name="delete">delete</string>
 
     <!-- Add Activity & Fragment strings -->
     <string name="menu_add">Add New Exchange</string>
@@ -71,7 +74,6 @@
     <string name="add_market_rate">Market Rate</string>
     <string name="add_add_button">Add</string>
     <string name="add_cancel_button">Cancel</string>
-    <string name="title_activity_currency_list">Currency List</string>
     <string name="add_saved_message">Saved Successful</string>
 
 

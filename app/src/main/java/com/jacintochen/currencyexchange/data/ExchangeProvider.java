@@ -7,11 +7,13 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Created by Bokii on 7/2/2015.
  */
 public class ExchangeProvider extends ContentProvider {
+    private String LOG_TAG = ExchangeProvider.class.getSimpleName();
 
     static final int LIST_EXCHANGE = 100;
     static final int ITEM_EXCHANGE = 101;
@@ -98,7 +100,7 @@ public class ExchangeProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         selection = ExchangeContract._ID + "=?";
-        String[] arg = new String[]{ExchangeContract.getIdExchangeUri(uri)};
+        String[] arg = {ExchangeContract.getIdExchangeUri(uri)};
 
         int count = db.update(ExchangeContract.TABLE_NAME, value, selection, arg);
 
@@ -114,7 +116,7 @@ public class ExchangeProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         selection = ExchangeContract._ID + "=?";
-        String[] arg = new String[]{ExchangeContract.getIdExchangeUri(uri)};
+        String[] arg = {ExchangeContract.getIdExchangeUri(uri)};
 
         int count = db.delete(ExchangeContract.TABLE_NAME, selection, arg);
 

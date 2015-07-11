@@ -136,11 +136,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 Intent saved = new Intent(getActivity(), CurrencyListActivity.class);
                 startActivity(saved);
                 break;
-            case R.id.menu_add:
-                //TODO: check out why dummy book makes it so complicated with interface editTask
-                Intent add = new Intent(getActivity(), AddActivity.class);
-                startActivity(add);
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

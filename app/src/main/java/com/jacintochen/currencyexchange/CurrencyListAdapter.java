@@ -1,9 +1,14 @@
 package com.jacintochen.currencyexchange;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -13,28 +18,23 @@ import com.jacintochen.currencyexchange.data.ExchangeContract;
  * Created by Bokii on 7/8/2015.
  */
 public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>{
-    Cursor cursor;
-    //TODO: add project/index column so it is faster
-    int COLUMN_ID;
-    int COLUMN_CURRENCY_ONE;
-    int COLUMN_CURRENCY_TWO;
+    private String LOG_TAG = CurrencyListAdapter.class.getSimpleName();
 
-    String[][] dummy= new String[][]{
-            {"USD" , "Peso"},
-            {"USD" , "EURO"},
-            {"USA BigMac", "JPN BigMac"},
-            {"Honey", "Bear"}
-    };
+    private Cursor cursor;
+    //TODO: add project/index column so it is faster
+    private int COLUMN_ID;
+    private int COLUMN_CURRENCY_ONE;
+    private int COLUMN_CURRENCY_TWO;
 
 
     public void swapCursor(Cursor c){
-//        cursor = c;
-//        if (c != null){
-//            COLUMN_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
-//            COLUMN_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
-//            COLUMN_ID = c.getColumnIndex(ExchangeContract._ID);
-//        }
-//        notifyDataSetChanged();
+        cursor = c;
+        if (c != null){
+            COLUMN_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
+            COLUMN_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
+            COLUMN_ID = c.getColumnIndex(ExchangeContract._ID);
+        }
+        notifyDataSetChanged();
 
     }
 
@@ -50,15 +50,44 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position){
-//        cursor.moveToPosition(position);
-//        viewHolder.currency_1.setText(cursor.getString(COLUMN_CURRENCY_ONE));
-//        viewHolder.currency_2.setText(cursor.getString(COLUMN_CURRENCY_TWO));
+        final long id = getItemId(position);
+        final Context context = viewHolder.currency_1.getContext();
 
-        viewHolder.currency_1.setText(dummy[position][0]);
-        viewHolder.currency_2.setText(dummy[position][1]);
+        cursor.moveToPosition(position);
+        viewHolder.currency_1.setText(cursor.getString(COLUMN_CURRENCY_ONE));
+        viewHolder.currency_2.setText(cursor.getString(COLUMN_CURRENCY_TWO));
 
-        //TODO: Add long pressed that will delete the cursor
+        // Clicking changes exchange for the calculator
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                // TODO: Need to finish the click function
+            }
+        });
 
+        // Long click activates the delete alert dialog
+        viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+           public boolean onLongClick(View view){
+               AlertDialog.Builder builder = new AlertDialog.Builder(context);
+               builder.setTitle(R.string.alertdialog_delete)
+                       .setCancelable(true)
+                       .setNegativeButton(android.R.string.cancel, null)
+                       .setPositiveButton(R.string.delete,
+                               new DialogInterface.OnClickListener(){
+                                   @Override
+                                   public void onClick(DialogInterface dialogInterface, int i){
+                                       deleteExchange(context, id);
+                                   }
+                               })
+                       .show();
+               return true;
+           }
+        });
+    }
+
+    private void deleteExchange(Context context, long id){
+        context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
     }
 
     @Override
@@ -69,8 +98,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
 
     @Override
     public int getItemCount(){
-//        return cursor != null ? cursor.getCount() : 0;
-        return dummy.length;
+        return cursor != null ? cursor.getCount() : 0;
     }
 
 
