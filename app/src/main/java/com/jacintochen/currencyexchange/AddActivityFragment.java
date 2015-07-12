@@ -69,8 +69,8 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
         String one_to_two_bank = mBank_rate.getText().toString();
         String one_to_two_market = mMarket_rate.getText().toString();
         // TODO: Figure out how to deal with the last two columns
-        String two_to_one_bank = "---";
-        String two_to_one_market = "---";
+        String two_to_one_bank = "0";
+        String two_to_one_market = "0";
 
         ContentValues values = new ContentValues();
         values.put(ExchangeContract.COLUMN_CURRENCY_ONE, currency_one);

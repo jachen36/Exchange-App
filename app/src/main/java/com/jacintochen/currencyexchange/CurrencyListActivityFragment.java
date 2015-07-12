@@ -23,6 +23,7 @@ import com.jacintochen.currencyexchange.data.ExchangeContract;
 public class CurrencyListActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     //TODO: Add the add feature to this activity as well
     // TODO: Figure out what happens when the activity stop while the loader is finishing up.
+    // TODO: Figure out what to do when there are zero entry on the list. what happens to the calculator
 
     private int LOADER_ID = 0;
     private RecyclerView mRecyclerView;

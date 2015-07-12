@@ -1,8 +1,10 @@
 package com.jacintochen.currencyexchange;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -25,14 +27,22 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     private int COLUMN_ID;
     private int COLUMN_CURRENCY_ONE;
     private int COLUMN_CURRENCY_TWO;
+    private int COLUMN_BANK_RATE_ONE_TO_TWO;
+    private int COLUMN_MARKET_RATE_ONE_TO_TWO;
+    private int COLUMN_BANK_RATE_TWO_TO_ONE;
+    private int COLUMN_MARKET_RATE_TWO_TO_ONE;
 
 
     public void swapCursor(Cursor c){
         cursor = c;
         if (c != null){
+            COLUMN_ID = c.getColumnIndex(ExchangeContract._ID);
             COLUMN_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
             COLUMN_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
-            COLUMN_ID = c.getColumnIndex(ExchangeContract._ID);
+            COLUMN_BANK_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO);
+            COLUMN_MARKET_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO);
+            COLUMN_BANK_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE);
+            COLUMN_MARKET_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE);
         }
         notifyDataSetChanged();
 
@@ -62,6 +72,17 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
             @Override
             public void onClick(View view){
                 // TODO: Need to finish the click function
+                Intent result = new Intent();
+                result.putExtra(ExchangeContract._ID, cursor.getString(COLUMN_ID));
+                result.putExtra(ExchangeContract.COLUMN_CURRENCY_ONE, cursor.getString(COLUMN_CURRENCY_ONE));
+                result.putExtra(ExchangeContract.COLUMN_CURRENCY_TWO, cursor.getString(COLUMN_CURRENCY_TWO));
+                result.putExtra(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, cursor.getString(COLUMN_BANK_RATE_ONE_TO_TWO));
+                result.putExtra(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, cursor.getString(COLUMN_MARKET_RATE_ONE_TO_TWO));
+                result.putExtra(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, cursor.getString(COLUMN_BANK_RATE_TWO_TO_ONE));
+                result.putExtra(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, cursor.getString(COLUMN_MARKET_RATE_TWO_TO_ONE));
+
+                // Send back the data to change the exchange of the calculator
+                ((Activity) context).setResult(Activity.RESULT_OK, result);
             }
         });
 

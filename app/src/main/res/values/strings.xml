@@ -52,7 +52,7 @@
     <string name="sell_rate">Sell</string>
     <string name="currency_2">Home Currency</string>
     <string name="difference_buy_sell">Difference</string>
-    <string name="temp_hint">Temp hint</string>
+    <string name="temp_zero">0</string>
     <string name="calculate">Calculate</string>
     <string name="selling_cost">Cost</string>
     <string name="selling_cost_result">$$$$$</string>

@@ -14,9 +14,9 @@
         android:layout_marginLeft="@dimen/main_activity_side_margin"
         android:layout_marginRight="@dimen/main_activity_side_margin">
 
-        <!--TODO: When I enter a database try using spinner to allow user to select which currency to use.-->
+        <!--TODO: Remove the start dummy title. Or keep it as temp-->
         <TextView
-            android:id="@+id/starter_currency"
+            android:id="@+id/start_currency_title"
             android:text="@string/start_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,7 +135,9 @@
         android:layout_marginLeft="@dimen/main_activity_side_margin"
         android:layout_marginRight="@dimen/main_activity_side_margin">
 
+        <!--TODO: Remove the end dummy title. Or keep it as temp-->
         <TextView
+            android:id="@+id/end_currency_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/end_currency"
