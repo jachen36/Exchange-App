@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -24,25 +25,26 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
 
     private Cursor cursor;
     //TODO: add project/index column so it is faster
-    private int COLUMN_ID;
-    private int COLUMN_CURRENCY_ONE;
-    private int COLUMN_CURRENCY_TWO;
-    private int COLUMN_BANK_RATE_ONE_TO_TWO;
-    private int COLUMN_MARKET_RATE_ONE_TO_TWO;
-    private int COLUMN_BANK_RATE_TWO_TO_ONE;
-    private int COLUMN_MARKET_RATE_TWO_TO_ONE;
+    private int INDEX_ID;
+    private int INDEX_CURRENCY_ONE;
+    private int INDEX_CURRENCY_TWO;
+    private int INDEX_BANK_RATE_ONE_TO_TWO;
+    private int INDEX_MARKET_RATE_ONE_TO_TWO;
+    private int INDEX_BANK_RATE_TWO_TO_ONE;
+    private int INDEX_MARKET_RATE_TWO_TO_ONE;
 
 
     public void swapCursor(Cursor c){
         cursor = c;
+        // Once I have projection I do not need this
         if (c != null){
-            COLUMN_ID = c.getColumnIndex(ExchangeContract._ID);
-            COLUMN_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
-            COLUMN_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
-            COLUMN_BANK_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO);
-            COLUMN_MARKET_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO);
-            COLUMN_BANK_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE);
-            COLUMN_MARKET_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE);
+            INDEX_ID = c.getColumnIndex(ExchangeContract._ID);
+            INDEX_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
+            INDEX_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
+            INDEX_BANK_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO);
+            INDEX_MARKET_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO);
+            INDEX_BANK_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE);
+            INDEX_MARKET_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE);
         }
         notifyDataSetChanged();
 
@@ -59,30 +61,60 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position){
+    public void onBindViewHolder(ViewHolder viewHolder, final int position){
         final long id = getItemId(position);
         final Context context = viewHolder.currency_1.getContext();
 
         cursor.moveToPosition(position);
-        viewHolder.currency_1.setText(cursor.getString(COLUMN_CURRENCY_ONE));
-        viewHolder.currency_2.setText(cursor.getString(COLUMN_CURRENCY_TWO));
+        Log.v(LOG_TAG, "Position-A = " + position);
+        viewHolder.currency_1.setText(cursor.getString(INDEX_CURRENCY_ONE));
+        viewHolder.currency_2.setText(cursor.getString(INDEX_CURRENCY_TWO));
 
         // Clicking changes exchange for the calculator
         viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                // TODO: Need to finish the click function
+                // TODO: cursor could be optimize like saving the cursor to the view, but require more memory but fast? IDK
+                cursor.moveToPosition(position);
                 Intent result = new Intent();
-                result.putExtra(ExchangeContract._ID, cursor.getString(COLUMN_ID));
-                result.putExtra(ExchangeContract.COLUMN_CURRENCY_ONE, cursor.getString(COLUMN_CURRENCY_ONE));
-                result.putExtra(ExchangeContract.COLUMN_CURRENCY_TWO, cursor.getString(COLUMN_CURRENCY_TWO));
-                result.putExtra(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, cursor.getString(COLUMN_BANK_RATE_ONE_TO_TWO));
-                result.putExtra(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, cursor.getString(COLUMN_MARKET_RATE_ONE_TO_TWO));
-                result.putExtra(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, cursor.getString(COLUMN_BANK_RATE_TWO_TO_ONE));
-                result.putExtra(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, cursor.getString(COLUMN_MARKET_RATE_TWO_TO_ONE));
+//                result.putExtra(ExchangeContract._ID, cursor.getLong(INDEX_ID));
+//                result.putExtra(ExchangeContract.INDEX_CURRENCY_ONE, cursor.getString(INDEX_CURRENCY_ONE));
+//                result.putExtra(ExchangeContract.INDEX_CURRENCY_TWO, cursor.getString(INDEX_CURRENCY_TWO));
+//                result.putExtra(ExchangeContract.INDEX_BANK_RATE_ONE_TO_TWO, cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO));
+//                result.putExtra(ExchangeContract.INDEX_MARKET_RATE_ONE_TO_TWO, cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO));
+//                result.putExtra(ExchangeContract.INDEX_BANK_RATE_TWO_TO_ONE, cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
+//                result.putExtra(ExchangeContract.INDEX_MARKET_RATE_TWO_TO_ONE, cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
+
+                // TODO: I might send the update to database here!
+
+                SharedPreferences.Editor editor = context.getSharedPreferences(
+                        context.getString(R.string.main_pref_values), Context.MODE_PRIVATE).edit();
+
+                // The currency position is reset to one every time
+                editor.putString(context.getString(R.string.mcurrency_position),
+                        context.getString(R.string.currency_position_default));
+                editor.putLong(ExchangeContract._ID, cursor.getLong(INDEX_ID));
+                editor.putString(ExchangeContract.COLUMN_CURRENCY_ONE,
+                        cursor.getString(INDEX_CURRENCY_ONE));
+                editor.putString(ExchangeContract.COLUMN_CURRENCY_TWO,
+                        cursor.getString(INDEX_CURRENCY_TWO));
+                editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
+                        cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO));
+                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
+                        cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO));
+                editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
+                        cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
+                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
+                        cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
+
+                editor.apply();
 
                 // Send back the data to change the exchange of the calculator
+                // TODO: Test if I can have null for intent. Save some cpu.
                 ((Activity) context).setResult(Activity.RESULT_OK, result);
+
+                // Return to main once data is set into preference
+                ((Activity) context).finish();
             }
         });
 
@@ -114,7 +146,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     @Override
     public long getItemId(int position){
         cursor.moveToPosition(position);
-        return cursor.getLong(COLUMN_ID);
+        return cursor.getLong(INDEX_ID);
     }
 
     @Override

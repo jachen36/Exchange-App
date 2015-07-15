@@ -1,7 +1,10 @@
 package com.jacintochen.currencyexchange;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
@@ -40,19 +43,23 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private EditText mMarket_Rate;
     private TextView mRate_TextView;
 
+    // Logistic
     private DecimalFormat mNumberFormatter;
     private boolean decimalPresent;
     private boolean legalRateInput;
     private boolean equalWasPressed;
+    private boolean rateWasChanged;
 
-    // Exchange information for the calculator
+    // Exchange data for the calculator
+    private SharedPreferences mPref;
+    private String mCurrency_Position;
     private long mId;
     private String mCurrency_One;
     private String mCurrency_Two;
-    private double mBank_Rate_One_To_Two;
-    private double mMarket_Rate_One_To_Two;
-    private double mBank_Rate_Two_To_One;
-    private double mMarket_Rate_Two_To_One;
+    private String mBank_Rate_One_To_Two;
+    private String mMarket_Rate_One_To_Two;
+    private String mBank_Rate_Two_To_One;
+    private String mMarket_Rate_Two_To_One;
 
     // TODO: Need to transfer data from activity result and when the activity just started
     // TODO: See if there is a way to do default values
@@ -64,17 +71,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null){
-            // TODO: Optimize the default values. Maybe pass it into the preference
-            mId = savedInstanceState.getLong(ExchangeContract._ID, -1);
-            mCurrency_One = savedInstanceState.getString(ExchangeContract.COLUMN_CURRENCY_ONE, "USD");
-            mCurrency_Two = savedInstanceState.getString(ExchangeContract.COLUMN_CURRENCY_TWO, "EURO");
-            mBank_Rate_One_To_Two = savedInstanceState.getDouble(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, 0.80);
-            mMarket_Rate_One_To_Two = savedInstanceState.getDouble(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, 0.90);
-            mBank_Rate_Two_To_One = savedInstanceState.getDouble(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, 1.05);
-            mMarket_Rate_Two_To_One = savedInstanceState.getDouble(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, 1.12);
-        }
+        mPref = getActivity().getSharedPreferences(getString(R.string.main_pref_values), Context.MODE_PRIVATE);
+        updateValues();
 
     }
 
@@ -85,14 +83,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         decimalPresent = false;
-        // TODO: Once I finished the savedState, legalRateInput might need to be changed to a different location
-        legalRateInput = false;
         equalWasPressed = false;
 
         // TODO: I might not need this decimalFormat if I am not using it for the start_currency
         mNumberFormatter = new DecimalFormat("#,###.##");
-
-        initializeButtonListener(rootView);
 
         // Views that can change
         mStart_Currency_Title = (TextView) rootView.findViewById(R.id.start_currency_title);
@@ -103,36 +97,17 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mMarket_Rate = (EditText) rootView.findViewById(R.id.market_rate_edittext);
         mRate_TextView = (TextView) rootView.findViewById(R.id.exchange_percentage);
         // TODO: Figure out how to remove focus after done is pressed. Probably use a dummy layout that is focusable
-        // TODO: Make a helper class so I do not have so much overhead
 
-        mBank_Rate.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+        mBank_Rate.addTextChangedListener(this.new EditWatcher());
+        mMarket_Rate.addTextChangedListener(this.new EditWatcher());
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-                updateRatePercentage();
-            }
-        });
-
-        mMarket_Rate.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-                updateRatePercentage();
-            }
-        });
-
+        refreshView();
+        initializeButtonListener(rootView);
         return rootView;
     }
 
-    public void initializeButtonListener(View v){
+    // This active the number and function dial to the calculator
+    private void initializeButtonListener(View v){
         // Find the closest view to the buttons to increase performance
         View btn_parent = v.findViewById(R.id.button_LinearLayout);
 
@@ -152,6 +127,44 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         btn_parent.findViewById(R.id.button_switch).setOnClickListener(this);
         btn_parent.findViewById(R.id.button_equal).setOnClickListener(this);
     }
+
+    // Refresh the view when changing exchange or switching between currency
+    private void refreshView(){
+        // TODO: Use currency position to determine which to display
+        // if (currency_one = "one")
+        mStart_Currency_Title.setText(mCurrency_One);
+        mEnd_Currency_Title.setText(mCurrency_Two);
+        mBank_Rate.setText(mBank_Rate_One_To_Two);
+        mMarket_Rate.setText(mMarket_Rate_One_To_Two);
+
+        // TODO: Add update
+        updateRatePercentage();
+    }
+
+    // Update the exchange data member variables for the calculator
+    private void updateValues(){
+        // Reset rateWasChange to false because user has yet to change the data
+        rateWasChanged = false;
+
+        // If data was not initialized, default value is set
+        mId = mPref.getLong(ExchangeContract._ID, -1);
+
+        mCurrency_Position = mPref.getString(getString(R.string.mcurrency_position),
+                getString(R.string.currency_position_default));
+        mCurrency_One = mPref.getString(ExchangeContract.COLUMN_CURRENCY_ONE,
+                getString(R.string.currency_one_default));
+        mCurrency_Two = mPref.getString(ExchangeContract.COLUMN_CURRENCY_TWO,
+                getString(R.string.currency_two_default));
+        mBank_Rate_One_To_Two = mPref.getString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
+                getString(R.string.bank_rate_one_to_two_default));
+        mMarket_Rate_One_To_Two = mPref.getString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
+                getString(R.string.market_rate_one_to_two_default));
+        mBank_Rate_Two_To_One = mPref.getString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
+                getString(R.string.bank_rate_two_to_one_default));
+        mMarket_Rate_Two_To_One = mPref.getString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
+                getString(R.string.market_rate_two_to_one_default));
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
@@ -182,43 +195,53 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-
-        outState.putLong(ExchangeContract._ID, mId);
-        outState.putString(ExchangeContract.COLUMN_CURRENCY_ONE, mCurrency_One);
-        outState.putString(ExchangeContract.COLUMN_CURRENCY_TWO, mCurrency_Two);
-        outState.putDouble(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
-        outState.putDouble(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
-        outState.putDouble(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, mBank_Rate_Two_To_One);
-        outState.putDouble(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, mMarket_Rate_Two_To_One);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == GET_EXCHANGE_REQUEST){
             if (resultCode == Activity.RESULT_OK){
                 // TODO: Find out what happens when textview text is set to null
-                mId = data.getLongExtra(ExchangeContract._ID, -1);
-                mCurrency_One = data.getStringExtra(ExchangeContract.COLUMN_CURRENCY_ONE);
-                mCurrency_Two = data.getStringExtra(ExchangeContract.COLUMN_CURRENCY_TWO);
-
-                try {
-                    // TODO: Should i put default values if an error happens? so that the program will still run?
-                    mBank_Rate_One_To_Two = Double.parseDouble(data.getStringExtra(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO));
-                    mMarket_Rate_One_To_Two = Double.parseDouble(data.getStringExtra(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO));
-                    mBank_Rate_Two_To_One = Double.parseDouble(data.getStringExtra(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE));
-                    mMarket_Rate_Two_To_One = Double.parseDouble(data.getStringExtra(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE));
-
-                } catch (NumberFormatException numb){
-                    Log.v(LOG_TAG, "Failed to parse in onActivityResult. " + numb);
-                }
-
+                // TODO: Might have to change this back to intent instead because saving is going to be a pain.
+                updateValues();
+                refreshView();
             }
         }
     }
 
+//    TODO: When making swtich make sure to save the currency_position
+//    public switch
 
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if (rateWasChanged){
+            if (mId > -1){
+                // TODO: Should this go into a loader/asynctask? No, because 2nd activity much distrube it.
+                SharedPreferences.Editor editor = mPref.edit();
+
+                editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
+                        mBank_Rate_One_To_Two);
+                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
+                        mMarket_Rate_One_To_Two);
+                editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
+                        mBank_Rate_Two_To_One);
+                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
+                        mMarket_Rate_Two_To_One);
+
+                editor.apply();
+//                ContentValues values = new ContentValues();
+//                values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
+//                values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
+//                values.put(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, mBank_Rate_Two_To_One);
+//                values.put(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, mMarket_Rate_Two_To_One);
+//
+//                getActivity().getContentResolver().update(
+//                        ExchangeContract.buildExchangeUri(mId),
+//                        values, null, null);
+            }
+        }
+    }
+
+    @Override
     public void onClick(View v){
         // TODO: Increase efficiency by using if statement that separate normal number from special operation. Instead of switch
         switch(v.getId()){
@@ -350,7 +373,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // TODO: Change the color or the rate
     public void updateRatePercentage(){
+        // User has changed either the bank or market so data changed
+        rateWasChanged = true;
+
         // Text that appears when either bank or market is empty
+        // TODO: Maybe I need a fool proof thing where if text was enter it will fail.
         String result = "---";
         int textColor = getResources().getColor(R.color.blue);
         legalRateInput = false;
@@ -394,6 +421,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         result = rate_formatter.format(rate_difference);
                     }
                     legalRateInput = true;
+                    // Only if the rates are legal does it update the values
+                    updateRateValue(bank, market);
                 }
 
             } catch (ParseException par) {
@@ -407,6 +436,32 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mRate_TextView.setText(result);
         mRate_TextView.setTextColor(textColor);
 
+    }
+
+    // Update the rate value
+    // TODO: It might be better to place this in onpause and ask if legal before saving.
+    private void updateRateValue(String bank, String market){
+        if (mCurrency_Position.equals("one")){
+            mBank_Rate_One_To_Two = bank;
+            mMarket_Rate_One_To_Two = market;
+        } else if (mCurrency_Position.equals("two")){
+            mBank_Rate_Two_To_One = bank;
+            mMarket_Rate_Two_To_One = market;
+        }
+    }
+
+
+    // TextWatcher class for Bank and Market rate edit text view.
+    private class EditWatcher implements TextWatcher {
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void afterTextChanged(Editable s) {
+            updateRatePercentage();
+        }
     }
 
 }

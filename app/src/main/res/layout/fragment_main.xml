@@ -14,10 +14,8 @@
         android:layout_marginLeft="@dimen/main_activity_side_margin"
         android:layout_marginRight="@dimen/main_activity_side_margin">
 
-        <!--TODO: Remove the start dummy title. Or keep it as temp-->
         <TextView
             android:id="@+id/start_currency_title"
-            android:text="@string/start_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="bottom|left"
@@ -140,7 +138,6 @@
             android:id="@+id/end_currency_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/end_currency"
             android:gravity="bottom"
             android:textSize="30sp"/>
 
