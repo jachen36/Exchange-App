@@ -2,6 +2,14 @@
     <string name="app_name">Currency Exchange</string>
 
     <string name="content_authority">com.jacintochen.currencyexchange.data.ExchangeProvider</string>
+
+    <!-- Main Activity Fragment strings-->
+    <!-- Keys for calculator's member values-->
+    <string name="main_pref_values">main_pref_values</string>
+    <string name="mcurrency_position">mCurrency_Position</string>
+
+
+
     <!--Starting currency-->
     <string name="start_currency">USD:</string>
     <string name="start_currency_hint">0</string>
@@ -22,7 +30,6 @@
 
     <string name="end_currency_hint">0</string>
 
-
     <!--Button's text-->
     <string name="button_one">1</string>
     <string name="button_two">2</string>
@@ -41,8 +48,9 @@
     <string name="button_switch">S</string>
     <string name="button_equal">=</string>
 
-
     <string name="action_settings">Settings</string>
+
+    <!-- End of Main Activity Fragment Strings-->
 
     <!-- Sell Activity & Fragment strings -->
     <string name="menu_sell">Sell</string>
