@@ -98,10 +98,36 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mRate_TextView = (TextView) rootView.findViewById(R.id.exchange_percentage);
         // TODO: Figure out how to remove focus after done is pressed. Probably use a dummy layout that is focusable
 
-        mBank_Rate.addTextChangedListener(this.new EditWatcher());
-        mMarket_Rate.addTextChangedListener(this.new EditWatcher());
-
+        // Calling refreshView before the listener prevent unnecessary calling
+        // updateRatePercentage multiple times.
         refreshView();
+        mBank_Rate.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                updateRatePercentage();
+                updateBankRate();
+            }
+        });
+        mMarket_Rate.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void afterTextChanged(Editable s) {
+                updateRatePercentage();
+                updateMarketRate();
+            }
+        });
+
+        // Call updateRatePercentage once both bank and market are set
+        updateRatePercentage();
         initializeButtonListener(rootView);
         return rootView;
     }
@@ -130,15 +156,18 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Refresh the view when changing exchange or switching between currency
     private void refreshView(){
+        Log.v(LOG_TAG, "refreshView called");
         // TODO: Use currency position to determine which to display
         // if (currency_one = "one")
         mStart_Currency_Title.setText(mCurrency_One);
         mEnd_Currency_Title.setText(mCurrency_Two);
+        Log.v(LOG_TAG, "Bank rate set");
         mBank_Rate.setText(mBank_Rate_One_To_Two);
+        Log.v(LOG_TAG, "Market rate set");
         mMarket_Rate.setText(mMarket_Rate_One_To_Two);
 
-        // TODO: Add update
-        updateRatePercentage();
+        // User has yet to change rate so rateWasChanged is equal to false
+        rateWasChanged = false;
     }
 
     // Update the exchange data member variables for the calculator
@@ -163,9 +192,17 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 getString(R.string.bank_rate_two_to_one_default));
         mMarket_Rate_Two_To_One = mPref.getString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
                 getString(R.string.market_rate_two_to_one_default));
+
+        printLog("updateValues");
+
     }
 
-
+    private void printLog(String function){
+        Log.v(LOG_TAG, "At "+ function + " = rateChanged: " + rateWasChanged + ", one: " +
+                mCurrency_One + ", two: " + mCurrency_Two + ", bank1: " +
+                mBank_Rate_One_To_Two + ", market1: " + mMarket_Rate_One_To_Two +
+                ", bank2: " + mBank_Rate_Two_To_One + ", market2: " + mMarket_Rate_Two_To_One);
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
@@ -200,6 +237,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             if (resultCode == Activity.RESULT_OK){
                 // TODO: Find out what happens when textview text is set to null
                 // TODO: Might have to change this back to intent instead because saving is going to be a pain.
+                Log.v(LOG_TAG, "At onActivityResult, next cals are updateValues and refreshView");
                 updateValues();
                 refreshView();
             }
@@ -213,6 +251,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     @Override
     public void onPause(){
         super.onPause();
+        Log.v(LOG_TAG, "onPaused was called");
         if (rateWasChanged){
             if (mId > -1){
                 // TODO: Should this go into a loader/asynctask? No, because 2nd activity much distrube it.
@@ -228,6 +267,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         mMarket_Rate_Two_To_One);
 
                 editor.apply();
+                // TODO: Need to change rateWasChanged to false here
+
+
+                printLog("onPause saved to preference");
 //                ContentValues values = new ContentValues();
 //                values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
 //                values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
@@ -373,8 +416,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // TODO: Change the color or the rate
     public void updateRatePercentage(){
-        // User has changed either the bank or market so data changed
-        rateWasChanged = true;
+        Log.v(LOG_TAG, "updateRatePercentage called");
+
 
         // Text that appears when either bank or market is empty
         // TODO: Maybe I need a fool proof thing where if text was enter it will fail.
@@ -421,8 +464,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         result = rate_formatter.format(rate_difference);
                     }
                     legalRateInput = true;
-                    // Only if the rates are legal does it update the values
-                    updateRateValue(bank, market);
+                    // User has changed either the bank or market so data changed
+                    rateWasChanged = true;
                 }
 
             } catch (ParseException par) {
@@ -438,6 +481,35 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     }
 
+    private void updateBankRate(){
+        if (legalRateInput){
+            if (mCurrency_Position.equals("one")){
+                mBank_Rate_One_To_Two = mBank_Rate.getText().toString();
+            } else if (mCurrency_Position.equals("two")){
+                mBank_Rate_Two_To_One = mBank_Rate.getText().toString();
+            }
+        }
+        printLog("updateBankRate");
+    }
+
+    private void updateMarketRate(){
+        if (legalRateInput){
+            if (mCurrency_Position.equals("one")){
+                mMarket_Rate_One_To_Two = mMarket_Rate.getText().toString();
+            } else if (mCurrency_Position.equals("two")){
+                mMarket_Rate_Two_To_One = mMarket_Rate.getText().toString();
+            }
+        }
+        printLog("updateMarketRate");
+    }
+
+
+
+
+
+
+
+
     // Update the rate value
     // TODO: It might be better to place this in onpause and ask if legal before saving.
     private void updateRateValue(String bank, String market){
@@ -448,6 +520,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             mBank_Rate_Two_To_One = bank;
             mMarket_Rate_Two_To_One = market;
         }
+        printLog("updateRateValue");
     }
 
 

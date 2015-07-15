@@ -38,6 +38,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         cursor = c;
         // Once I have projection I do not need this
         if (c != null){
+            // TODO: Remove this when i have the projections
             INDEX_ID = c.getColumnIndex(ExchangeContract._ID);
             INDEX_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
             INDEX_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
@@ -45,6 +46,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
             INDEX_MARKET_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO);
             INDEX_BANK_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE);
             INDEX_MARKET_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE);
+
         }
         notifyDataSetChanged();
 
@@ -66,7 +68,6 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         final Context context = viewHolder.currency_1.getContext();
 
         cursor.moveToPosition(position);
-        Log.v(LOG_TAG, "Position-A = " + position);
         viewHolder.currency_1.setText(cursor.getString(INDEX_CURRENCY_ONE));
         viewHolder.currency_2.setText(cursor.getString(INDEX_CURRENCY_TWO));
 
@@ -108,6 +109,25 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                         cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
 
                 editor.apply();
+
+                Log.v(LOG_TAG, "At Adapter onClick.");
+                Log.v(LOG_TAG, "Column index are: " +
+                                INDEX_ID + " " +
+                                INDEX_CURRENCY_ONE + " " +
+                                INDEX_CURRENCY_TWO + " " +
+                                INDEX_BANK_RATE_ONE_TO_TWO + " " +
+                                INDEX_MARKET_RATE_ONE_TO_TWO + " " +
+                                INDEX_BANK_RATE_TWO_TO_ONE + " " +
+                                INDEX_MARKET_RATE_TWO_TO_ONE);
+                Log.v(LOG_TAG, "Cursor values input to preference are: " +
+                                cursor.getLong(INDEX_ID) + " : " +
+                                cursor.getString(INDEX_CURRENCY_ONE) + " : " +
+                                cursor.getString(INDEX_CURRENCY_TWO) + " : " +
+                                cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO) + " : " +
+                                cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO) + " : " +
+                                cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE) + " : " +
+                                cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
+                Log.v(LOG_TAG, "Exit Adapter");
 
                 // Send back the data to change the exchange of the calculator
                 // TODO: Test if I can have null for intent. Save some cpu.
