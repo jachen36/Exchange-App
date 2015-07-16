@@ -78,15 +78,6 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                 // TODO: cursor could be optimize like saving the cursor to the view, but require more memory but fast? IDK
                 cursor.moveToPosition(position);
                 Intent result = new Intent();
-//                result.putExtra(ExchangeContract._ID, cursor.getLong(INDEX_ID));
-//                result.putExtra(ExchangeContract.INDEX_CURRENCY_ONE, cursor.getString(INDEX_CURRENCY_ONE));
-//                result.putExtra(ExchangeContract.INDEX_CURRENCY_TWO, cursor.getString(INDEX_CURRENCY_TWO));
-//                result.putExtra(ExchangeContract.INDEX_BANK_RATE_ONE_TO_TWO, cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO));
-//                result.putExtra(ExchangeContract.INDEX_MARKET_RATE_ONE_TO_TWO, cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO));
-//                result.putExtra(ExchangeContract.INDEX_BANK_RATE_TWO_TO_ONE, cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
-//                result.putExtra(ExchangeContract.INDEX_MARKET_RATE_TWO_TO_ONE, cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
-
-                // TODO: I might send the update to database here!
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(
                         context.getString(R.string.main_pref_values), Context.MODE_PRIVATE).edit();
@@ -107,7 +98,6 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                         cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
                 editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
                         cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
-
                 editor.apply();
 
                 Log.v(LOG_TAG, "At Adapter onClick.");
@@ -180,14 +170,11 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         TextView currency_1;
         TextView currency_2;
 
-
         public ViewHolder(CardView itemView){
             super(itemView);
             cardView = itemView;
             currency_1 = (TextView) itemView.findViewById(R.id.card_view_currency_1);
             currency_2 = (TextView) itemView.findViewById(R.id.card_view_currency_2);
-
         }
-
     }
 }

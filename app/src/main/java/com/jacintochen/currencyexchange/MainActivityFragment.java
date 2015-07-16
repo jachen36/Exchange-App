@@ -48,6 +48,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private boolean decimalPresent;
     private boolean legalRateInput;
     private boolean equalWasPressed;
+    // TODO: Check if there are unnecessary change to rateWasChange after adding enableUpdate
     private boolean rateWasChanged;
     private boolean enableUpdate;
 
@@ -265,7 +266,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             if (mId > -1){
                 // TODO: Should this go into a loader/asynctask? No, because 2nd activity much distrube it.
                 SharedPreferences.Editor editor = mPref.edit();
-
                 editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
                         mBank_Rate_One_To_Two);
                 editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
@@ -274,24 +274,25 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         mBank_Rate_Two_To_One);
                 editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
                         mMarket_Rate_Two_To_One);
-
                 editor.apply();
-                // TODO: Update database.
 
+                // TODO: Check what happens when I make 1 legal change at bank then 1 illegal change to market. see if it will save it to database
 
                 printLog("onPause saved to preference");
 
+                // Update Exchange data in the database
+                ContentValues values = new ContentValues();
+                values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
+                values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
+                values.put(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, mBank_Rate_Two_To_One);
+                values.put(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, mMarket_Rate_Two_To_One);
+
+                getActivity().getContentResolver().update(
+                        ExchangeContract.buildExchangeUri(mId),
+                        values, null, null);
+
                 // New changes has been saved so reset rateWasChanged to false
                 rateWasChanged = false;
-//                ContentValues values = new ContentValues();
-//                values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
-//                values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
-//                values.put(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, mBank_Rate_Two_To_One);
-//                values.put(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, mMarket_Rate_Two_To_One);
-//
-//                getActivity().getContentResolver().update(
-//                        ExchangeContract.buildExchangeUri(mId),
-//                        values, null, null);
             }
         }
     }
@@ -511,40 +512,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             rateWasChanged = true;
         }
         printLog("updateMarketRate");
-    }
-
-
-
-
-
-
-
-
-    // Update the rate value
-    // TODO: It might be better to place this in onpause and ask if legal before saving.
-    private void updateRateValue(String bank, String market){
-        if (mCurrency_Position.equals("one")){
-            mBank_Rate_One_To_Two = bank;
-            mMarket_Rate_One_To_Two = market;
-        } else if (mCurrency_Position.equals("two")){
-            mBank_Rate_Two_To_One = bank;
-            mMarket_Rate_Two_To_One = market;
-        }
-        printLog("updateRateValue");
-    }
-
-
-    // TextWatcher class for Bank and Market rate edit text view.
-    private class EditWatcher implements TextWatcher {
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        public void afterTextChanged(Editable s) {
-            updateRatePercentage();
-        }
     }
 
 }
