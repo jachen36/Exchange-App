@@ -16,7 +16,9 @@
     <Button
         android:id="@+id/list_add_exchange_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/list_add_button_title"/>
+        android:layout_height="@dimen/add_button_height"
+        android:layout_marginTop="@dimen/add_button_margin_top"
+        android:text="@string/list_add_button_title"
+        android:textSize="26sp"/>
 
 </LinearLayout>

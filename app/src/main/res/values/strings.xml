@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Currency Exchange</string>
+    <string name="app_name">Exchange</string>
 
     <string name="content_authority">com.jacintochen.currencyexchange.data.ExchangeProvider</string>
 
@@ -84,7 +84,9 @@
     <string name="add_saved_message">Saved Successful</string>
 
 
-
+    <!-- String for Testing-->
+    <string name="test_USD">USD</string>
+    <string name="test_EURO">EURO</string>
 
 
 </resources>

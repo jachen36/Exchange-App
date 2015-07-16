@@ -11,6 +11,7 @@
     android:layout_marginBottom="@dimen/card_view_half_spacing"
     card_view:cardCornerRadius="0dp" >
 
+    <!-- TODO: find out what is the max length of the text that can fit. Maybe autotext here too?-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,14 +23,17 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
-            android:textSize="22sp"/>
+            android:text="@string/test_USD"
+            android:textSize="30sp"/>
 
         <!--TODO: Change the imageview to a switch icon-->
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_more_black_36dp"/>
+            android:scaleType="fitCenter"
+            android:padding="@dimen/swap_image_padding"
+            android:src="@drawable/ic_swap_horiz_black_24dp"/>
 
         <TextView
             android:id="@+id/card_view_currency_2"
@@ -37,7 +41,8 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
-            android:textSize="22sp"/>
+            android:text="@string/test_EURO"
+            android:textSize="30sp"/>
 
     </LinearLayout>
 

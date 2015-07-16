@@ -73,6 +73,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.v(LOG_TAG, "onCreate called");
         mPref = getActivity().getSharedPreferences(getString(R.string.main_pref_values), Context.MODE_PRIVATE);
         updateValues();
 
