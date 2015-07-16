@@ -49,6 +49,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private boolean legalRateInput;
     private boolean equalWasPressed;
     private boolean rateWasChanged;
+    private boolean enableUpdate;
 
     // Exchange data for the calculator
     private SharedPreferences mPref;
@@ -109,8 +110,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
 
             public void afterTextChanged(Editable s) {
-                updateRatePercentage();
-                updateBankRate();
+                if (enableUpdate){
+                    updateRatePercentage();
+                    updateBankRate();
+                }
             }
         });
         mMarket_Rate.addTextChangedListener(new TextWatcher() {
@@ -121,13 +124,15 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
 
             public void afterTextChanged(Editable s) {
-                updateRatePercentage();
-                updateMarketRate();
+                if (enableUpdate) {
+                    updateRatePercentage();
+                    updateMarketRate();
+                }
             }
         });
 
-        // Call updateRatePercentage once both bank and market are set
-        updateRatePercentage();
+
+
         initializeButtonListener(rootView);
         return rootView;
     }
@@ -156,6 +161,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Refresh the view when changing exchange or switching between currency
     private void refreshView(){
+        enableUpdate = false;
         Log.v(LOG_TAG, "refreshView called");
         // TODO: Use currency position to determine which to display
         // if (currency_one = "one")
@@ -166,8 +172,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         Log.v(LOG_TAG, "Market rate set");
         mMarket_Rate.setText(mMarket_Rate_One_To_Two);
 
-        // User has yet to change rate so rateWasChanged is equal to false
+        enableUpdate = true;
+        // User has yet to change rate so rateWasChanged is false
         rateWasChanged = false;
+        // Call updateRatePercentage once both bank and market are set
+        updateRatePercentage();
     }
 
     // Update the exchange data member variables for the calculator
@@ -267,10 +276,13 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         mMarket_Rate_Two_To_One);
 
                 editor.apply();
-                // TODO: Need to change rateWasChanged to false here
+                // TODO: Update database.
 
 
                 printLog("onPause saved to preference");
+
+                // New changes has been saved so reset rateWasChanged to false
+                rateWasChanged = false;
 //                ContentValues values = new ContentValues();
 //                values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
 //                values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO, mMarket_Rate_One_To_Two);
@@ -418,7 +430,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void updateRatePercentage(){
         Log.v(LOG_TAG, "updateRatePercentage called");
 
-
         // Text that appears when either bank or market is empty
         // TODO: Maybe I need a fool proof thing where if text was enter it will fail.
         String result = "---";
@@ -464,10 +475,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         result = rate_formatter.format(rate_difference);
                     }
                     legalRateInput = true;
-                    // User has changed either the bank or market so data changed
-                    rateWasChanged = true;
                 }
-
             } catch (ParseException par) {
                 Log.v(LOG_TAG, "Parsing error. " + par);
             } catch (IllegalArgumentException arg){
@@ -488,6 +496,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             } else if (mCurrency_Position.equals("two")){
                 mBank_Rate_Two_To_One = mBank_Rate.getText().toString();
             }
+            rateWasChanged = true;
         }
         printLog("updateBankRate");
     }
@@ -499,6 +508,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             } else if (mCurrency_Position.equals("two")){
                 mMarket_Rate_Two_To_One = mMarket_Rate.getText().toString();
             }
+            rateWasChanged = true;
         }
         printLog("updateMarketRate");
     }
