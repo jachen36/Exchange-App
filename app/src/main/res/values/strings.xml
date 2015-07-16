@@ -7,13 +7,12 @@
     <!-- Keys for calculator's member values-->
     <string name="main_pref_values">main_pref_values</string>
     <string name="mcurrency_position">mCurrency_Position</string>
-
-
+    <string name="position_one">one</string>
+    <string name="position_two">two</string>
 
     <!--Starting currency-->
     <string name="start_currency">USD:</string>
     <string name="start_currency_hint">0</string>
-
 
     <!--Ending currency-->
     <string name="bank">Bank</string>

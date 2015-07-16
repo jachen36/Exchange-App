@@ -111,7 +111,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
 
             public void afterTextChanged(Editable s) {
-                if (enableUpdate){
+                if (enableUpdate) {
                     updateRatePercentage();
                     updateBankRate();
                 }
@@ -131,8 +131,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 }
             }
         });
-
-
 
         initializeButtonListener(rootView);
         return rootView;
@@ -162,20 +160,29 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Refresh the view when changing exchange or switching between currency
     private void refreshView(){
+        // Prevent edittext view from updating values
         enableUpdate = false;
         Log.v(LOG_TAG, "refreshView called");
         // TODO: Use currency position to determine which to display
-        // if (currency_one = "one")
-        mStart_Currency_Title.setText(mCurrency_One);
-        mEnd_Currency_Title.setText(mCurrency_Two);
-        Log.v(LOG_TAG, "Bank rate set");
-        mBank_Rate.setText(mBank_Rate_One_To_Two);
-        Log.v(LOG_TAG, "Market rate set");
-        mMarket_Rate.setText(mMarket_Rate_One_To_Two);
-
+        if (mCurrency_Position.equals(getString(R.string.position_one))){
+            mStart_Currency_Title.setText(mCurrency_One);
+            mEnd_Currency_Title.setText(mCurrency_Two);
+            Log.v(LOG_TAG, "Bank rate set_ONE");
+            mBank_Rate.setText(mBank_Rate_One_To_Two);
+            Log.v(LOG_TAG, "Market rate set_ONE");
+            mMarket_Rate.setText(mMarket_Rate_One_To_Two);
+        }
+        else if (mCurrency_Position.equals(getString(R.string.position_two))){
+            mStart_Currency_Title.setText(mCurrency_Two);
+            mEnd_Currency_Title.setText(mCurrency_One);
+            Log.v(LOG_TAG, "Bank rate set_TWO");
+            mBank_Rate.setText(mBank_Rate_Two_To_One);
+            Log.v(LOG_TAG, "Market rate set_TWO");
+            mMarket_Rate.setText(mMarket_Rate_Two_To_One);
+        }
+        // Allow edittext view to detect user input now
         enableUpdate = true;
-        // User has yet to change rate so rateWasChanged is false
-        rateWasChanged = false;
+
         // Call updateRatePercentage once both bank and market are set
         updateRatePercentage();
     }
@@ -208,10 +215,15 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     private void printLog(String function){
-        Log.v(LOG_TAG, "At "+ function + " = rateChanged: " + rateWasChanged + ", one: " +
-                mCurrency_One + ", two: " + mCurrency_Two + ", bank1: " +
-                mBank_Rate_One_To_Two + ", market1: " + mMarket_Rate_One_To_Two +
-                ", bank2: " + mBank_Rate_Two_To_One + ", market2: " + mMarket_Rate_Two_To_One);
+        Log.v(LOG_TAG, "At "+ function +
+                " = rateChanged: " + rateWasChanged +
+                ", position: " + mCurrency_Position +
+                ", one: " + mCurrency_One +
+                ", two: " + mCurrency_Two +
+                ", bank1: " + mBank_Rate_One_To_Two +
+                ", market1: " + mMarket_Rate_One_To_Two +
+                ", bank2: " + mBank_Rate_Two_To_One +
+                ", market2: " + mMarket_Rate_Two_To_One);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
@@ -344,6 +356,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 break;
             // TODO: Finish function for switch
             case (R.id.button_switch):
+                switchExchange();
+                // Reset the calculator each time to switch
+                clear();
                 break;
             case (R.id.button_equal):
                 equal();
@@ -354,15 +369,28 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    // Swap the start and end currency
+    private void switchExchange(){
+        if (mCurrency_Position.equals(getString(R.string.position_two))){
+            mCurrency_Position = getString(R.string.position_one);
+        } else {
+            mCurrency_Position = getString(R.string.position_two);
+        }
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putString(getString(R.string.mcurrency_position), mCurrency_Position);
+        refreshView();
+    }
 
-    public void clear(){
+    // Return both mStart_currency_textview and mEnd_Currency_textview to zero
+    private void clear(){
         mStart_Currency_TextView.setText("0");
         mEnd_Currency_TextView.setText("0");
         decimalPresent = false;
         equalWasPressed = false;
     }
 
-    public void backspace(){
+    // Remove the last number from mStart_Currency_textview
+    private void backspace(){
         CharSequence textView = mStart_Currency_TextView.getText();
         int length = textView.length();
         if (length == 1){
@@ -376,7 +404,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     // Insert the number pressed
-    public void insert(String num){
+    private void insert(String num){
         // After equal has been pressed, the next button should reset the calculator
         if (equalWasPressed){clear();}
 
@@ -389,12 +417,12 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     // Inserts the decimal point and change decimalPresent to true
-    public void insertDot(){
+    private void insertDot(){
         decimalPresent = true;
         mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + ".");
     }
 
-    public void equal(){
+    private void equal(){
         if (!equalWasPressed){
             String result = "ERROR";
 
@@ -428,7 +456,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     // TODO: Change the color or the rate
-    public void updateRatePercentage(){
+    private void updateRatePercentage(){
         Log.v(LOG_TAG, "updateRatePercentage called");
 
         // Text that appears when either bank or market is empty
@@ -492,9 +520,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     private void updateBankRate(){
         if (legalRateInput){
-            if (mCurrency_Position.equals("one")){
+            if (mCurrency_Position.equals(getString(R.string.position_one))){
                 mBank_Rate_One_To_Two = mBank_Rate.getText().toString();
-            } else if (mCurrency_Position.equals("two")){
+            } else if (mCurrency_Position.equals(getString(R.string.position_two))){
                 mBank_Rate_Two_To_One = mBank_Rate.getText().toString();
             }
             rateWasChanged = true;
@@ -504,9 +532,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     private void updateMarketRate(){
         if (legalRateInput){
-            if (mCurrency_Position.equals("one")){
+            if (mCurrency_Position.equals(getString(R.string.position_one))){
                 mMarket_Rate_One_To_Two = mMarket_Rate.getText().toString();
-            } else if (mCurrency_Position.equals("two")){
+            } else if (mCurrency_Position.equals(getString(R.string.position_two))){
                 mMarket_Rate_Two_To_One = mMarket_Rate.getText().toString();
             }
             rateWasChanged = true;
