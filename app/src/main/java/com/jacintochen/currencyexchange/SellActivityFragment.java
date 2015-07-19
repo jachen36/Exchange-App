@@ -27,6 +27,7 @@ public class SellActivityFragment extends Fragment {
     private TextView mCost;
 
     //TODO: Remove the menu on this activity if I don't have any setting for this
+    // TODO: Make sure user fill everything out
 
     public SellActivityFragment() {
     }

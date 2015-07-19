@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivityFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/dark_grey">
 
 
     <LinearLayout
@@ -18,19 +19,18 @@
             android:id="@+id/start_currency_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom|left"
-            android:textSize="30sp"/>
+            style="@style/calculator_currency_title"/>
 
         <!-- TODO: Try using autoFitTextView which seem pretty simply-->
         <TextView
             android:id="@+id/start_currency_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:maxLines="1"
             android:gravity="bottom|right"
-            android:textSize="42sp"
-            android:hint="@string/start_currency_hint"
-            android:layout_weight="1" />
+            android:text="@string/start_currency_hint"
+            style="@style/calculator_currency_number"/>
 
     </LinearLayout>
 
@@ -48,70 +48,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bank"
-            android:textSize="16sp"/>
+            style="@style/calculator_rate_title"/>
 
-
-        <!-- TODO: Remove edittext line by providing a transparent background -->
         <!-- TODO: Try to remove focus from the text after done is pressed -->
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="2"-->
-            <!--android:text="@string/temp_bank_rate"-->
-            <!--android:textSize="22sp"-->
-            <!--android:gravity="center"/>-->
 
         <EditText
             android:id="@+id/bank_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:hint="@string/rate"
-            android:inputType="numberDecimal"
-            android:maxLength="7"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:padding="0dp"
-            android:selectAllOnFocus="true"
-            android:cursorVisible="false"/>
+            style="@style/calculator_rate_edit"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/market"
-            android:textSize="16sp"/>
-
-        <!--<TextView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="2"-->
-            <!--android:hint="@string/rate"-->
-            <!--android:textSize="20sp"-->
-            <!--android:gravity="center"-->
-            <!--android:maxLength="7"-->
-            <!--android:editable="true"-->
-            <!--android:inputType="numberDecimal"-->
-            <!--android:focusableInTouchMode="true"/>-->
+            style="@style/calculator_rate_title"/>
 
         <EditText
             android:id="@+id/market_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:hint="@string/rate"
-            android:inputType="numberDecimal"
-            android:maxLength="7"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:padding="0dp"
-            android:selectAllOnFocus="true"
-            android:cursorVisible="false"/>
+            style="@style/calculator_rate_edit"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/exchange_rate"
-            android:textSize="16sp"/>
+            style="@style/calculator_rate_title"/>
 
         <TextView
             android:id="@+id/exchange_percentage"
@@ -119,12 +84,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:text="@string/temp_difference_rate"
-            android:textColor="@color/blue"
+            android:textColor="@color/light_grey"
             android:textSize="18sp"
             android:gravity="center"/>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,13 +97,11 @@
         android:layout_marginLeft="@dimen/main_activity_side_margin"
         android:layout_marginRight="@dimen/main_activity_side_margin">
 
-        <!--TODO: Remove the end dummy title. Or keep it as temp-->
         <TextView
             android:id="@+id/end_currency_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:textSize="30sp"/>
+            style="@style/calculator_currency_title"/>
 
         <TextView
             android:id="@+id/end_currency_textview"
@@ -147,9 +109,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxLines="1"
-            android:textSize="42sp"
-            android:text="@string/end_currency_hint"
-            android:gravity="bottom|right" />
+            android:gravity="bottom|right"
+            android:text="@string/start_currency_hint"
+            style="@style/calculator_currency_number"/>
     </LinearLayout>
 
     <LinearLayout
@@ -173,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_seven"
-                android:background="@drawable/button_number_selector" />
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_eight"
@@ -181,7 +143,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_eight"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_nine"
@@ -189,14 +151,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_nine"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_clear"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_clear"
+                android:src="@drawable/ic_refresh_black_36dp"
                 android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
@@ -213,7 +175,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_four"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_five"
@@ -221,7 +183,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_five"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_six"
@@ -229,14 +191,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_six"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_back"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_back"
+                android:src="@drawable/ic_keyboard_backspace_black_36dp"
                 android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>
@@ -253,7 +215,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_one"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_two"
@@ -261,7 +223,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_two"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_three"
@@ -269,15 +231,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_three"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_switch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_switch"
-                android:background="@drawable/button_function_selector"/>
+                android:src="@drawable/ic_swap_vert_black_36dp"
+                android:background="@drawable/button_function_selector" />
 
         </LinearLayout>
 
@@ -293,7 +255,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:text="@string/button_zero"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_decimal"
@@ -301,7 +263,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_decimal"
-                android:background="@drawable/button_number_selector"/>
+                style="@style/calculator_button"/>
 
             <Button
                 android:id="@+id/button_equal"
@@ -309,6 +271,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_equal"
+                android:textSize="40sp"
+                android:typeface="monospace"
                 android:background="@drawable/button_function_selector"/>
 
         </LinearLayout>

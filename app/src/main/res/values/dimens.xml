@@ -6,6 +6,9 @@
     <dimen name="main_activity_side_margin">7dp</dimen>
     <dimen name="bank_market_rate_margin">5dp</dimen>
 
+    <!-- Calculator -->
+    <dimen name="rate_edittext_padding">0dp</dimen>
+
     <!-- Sell Activity dimen -->
     <dimen name="sell_activity_marginTop">10dp</dimen>
 

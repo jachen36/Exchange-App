@@ -463,7 +463,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         // Text that appears when either bank or market is empty
         // TODO: Maybe I need a fool proof thing where if text was enter it will fail.
         String result = "---";
-        int textColor = getResources().getColor(R.color.blue);
+        int textColor = getResources().getColor(R.color.light_grey);
         legalRateInput = false;
 
         String bank = mBank_Rate.getText().toString();

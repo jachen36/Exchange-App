@@ -140,7 +140,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                                new DialogInterface.OnClickListener(){
                                    @Override
                                    public void onClick(DialogInterface dialogInterface, int i){
-                                       deleteExchange(context, id);
+                                       deleteExchange(context, id, position);
                                    }
                                })
                        .show();
@@ -149,8 +149,11 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         });
     }
 
-    private void deleteExchange(Context context, long id){
+    private void deleteExchange(Context context, long id, int position){
         context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
+        notifyItemRemoved(position);
+
+        // TODO: Do I need a notify change?
     }
 
     @Override
