@@ -8,9 +8,9 @@
     android:orientation="vertical"
     android:id="@+id/sell_main_layout">
 
-    <!-- TODO: Add something that would lose focus when done is pressed-->
-    <!-- TODO: have custom edittext box maybe a dark grey box -->
+
     <!-- TODO: make hint disappear when focus. might have to do this dynamically-->
+    <!-- TODO: Might be better to do wrap content instead of weight because the error msg might cause the edit box to be too tight. So padding to solve-->
 
     <!-- Line 1 & 2-->
     <LinearLayout
@@ -34,6 +34,13 @@
             style="@style/sell_edit_text"/>
 
     </LinearLayout>
+
+    <!-- Display error message for Foreign Currency-->
+    <TextView
+        android:id="@+id/sell_error_foreign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/error_text"/>
 
     <!-- Line 3 -->
     <LinearLayout
@@ -61,6 +68,13 @@
 
     </LinearLayout>
 
+    <!-- Display error message for Buy Rate-->
+    <TextView
+        android:id="@+id/sell_error_buy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/error_text"/>
+
     <!-- Line 4 -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,6 +101,12 @@
 
     </LinearLayout>
 
+    <!-- Display error message for Foreign Currency-->
+    <TextView
+        android:id="@+id/sell_error_market_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/error_text"/>
 
     <!-- Line 5 & 6-->
     <LinearLayout
@@ -146,7 +166,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:gravity="bottom">
         <Button
             android:id="@+id/sell_calculate_button"

@@ -60,5 +60,12 @@
     </style>
 
 
+    <!-- Error text-->
+    <style name="error_text">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text"></item>
+    </style>
 
 </resources>

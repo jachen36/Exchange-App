@@ -87,6 +87,7 @@
     <!-- String for Testing-->
     <string name="test_USD">USD</string>
     <string name="test_EURO">EURO</string>
+    <string name="test_error">Testing for error information right now testing!</string>
 
 
 </resources>

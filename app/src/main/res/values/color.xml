@@ -6,9 +6,11 @@
     <color name="blue_dark">#64B5F6</color>
     <color name="green">#76FF03</color>
     <color name="red">#F44336</color>
+    <color name="red_color">#cc0000</color>
     <color name="light_grey">#E0E0E0</color>
     <color name="dark_grey_light">#9E9E9E</color>
     <color name="dark_grey">#212121</color>
+    <color name="black">#000000</color>
 
 
 </resources>

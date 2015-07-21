@@ -1,6 +1,7 @@
 package com.jacintochen.currencyexchange;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class SellActivityFragment extends Fragment {
     private EditText mSell_Rate;
     private TextView mCurrency_Two;
     private TextView mCost;
+    private Drawable default_edit_textfield;
 
     //TODO: Remove the menu on this activity if I don't have any setting for this
     // TODO: Make sure user fill everything out
@@ -48,6 +50,7 @@ public class SellActivityFragment extends Fragment {
         mCurrency_Two = (TextView) rootView.findViewById(R.id.currency_2_textview);
         mCost = (TextView) rootView.findViewById(R.id.cost);
 
+        default_edit_textfield = mCurrency_One.getBackground();
         Button calculate = (Button) rootView.findViewById(R.id.sell_calculate_button);
         calculate.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -66,6 +69,22 @@ public class SellActivityFragment extends Fragment {
         String sell_rate = mSell_Rate.getText().toString();
         String currency_two_result = "Missing Value";
 
+        /* if (one.lenght == 0)
+            change to return and insert error msg
+            oneIsLegal = false;
+            else
+            return to normal and remove error msg
+            oneIsLegal = true;
+
+            ... Do the same for the other two
+
+            If (legal && legal && legal)
+            do calculation.
+            else
+            maybe give hint for home currency and cost too.
+
+
+         */
         if (currency_one.length() != 0 && buy_rate.length() != 0 && sell_rate.length() != 0){
             if (currency_one != "." && buy_rate != "." && sell_rate != "."){
                 // TODO: the parsing formatter needs to be optimized
