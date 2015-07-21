@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.jacintochen.currencyexchange.SellActivityFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/sell_main_layout">
 
     <!-- TODO: Add something that would lose focus when done is pressed-->
     <!-- TODO: have custom edittext box maybe a dark grey box -->
@@ -23,17 +24,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/currency_1"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
         <EditText
             android:id="@+id/currency_1_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
             android:hint="@string/temp_zero"
-            android:textSize="22sp"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"/>
+            style="@style/sell_edit_text"/>
 
     </LinearLayout>
 
@@ -49,20 +47,17 @@
             android:id="@+id/buy_rate_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="@string/buy_rate"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
         <EditText
             android:id="@+id/buy_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:gravity="right"
             android:hint="@string/temp_zero"
-            android:textSize="22sp"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"/>
+            style="@style/sell_edit_text"/>
 
     </LinearLayout>
 
@@ -78,20 +73,17 @@
             android:id="@+id/sell_rate_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="@string/sell_rate"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
         <EditText
             android:id="@+id/sell_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:gravity="right"
             android:hint="@string/temp_zero"
-            android:textSize="22sp"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true"/>
+            style="@style/sell_edit_text"/>
 
     </LinearLayout>
 
@@ -109,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/currency_2"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
         <TextView
             android:id="@+id/currency_2_textview"
@@ -117,7 +109,7 @@
             android:layout_height="fill_parent"
             android:gravity="bottom|right"
             android:text="@string/temp_zero"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
     </LinearLayout>
 
@@ -135,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/selling_cost"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
         <TextView
             android:id="@+id/cost"
@@ -144,7 +136,7 @@
             android:layout_weight="2"
             android:text="@string/temp_zero"
             android:gravity="right"
-            android:textSize="22sp"/>
+            style="@style/sell_text_size"/>
 
 
     </LinearLayout>
@@ -154,16 +146,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:gravity="bottom">
         <Button
             android:id="@+id/sell_calculate_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/calculate"
-            android:textSize="22sp"/>
-
-
+            style="@style/sell_text_size"
+            android:paddingTop="@dimen/sell_calculate_button_padding"
+            android:paddingBottom="@dimen/sell_calculate_button_padding"/>
 
     </LinearLayout>
 

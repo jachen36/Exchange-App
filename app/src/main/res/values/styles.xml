@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Calculator design -->
     <style name="primary_text">
         <item name="android:textColor">@color/white</item>
     </style>
@@ -34,6 +35,7 @@
         <item name="android:hint">@string/rate</item>
         <item name="android:padding">@dimen/rate_edittext_padding</item>
         <item name="android:inputType">numberDecimal</item>
+        <item name="android:imeOptions">actionDone</item>
         <item name="android:selectAllOnFocus">true</item>
         <item name="android:cursorVisible">false</item>
     </style>
@@ -43,5 +45,20 @@
         <item name="android:typeface">monospace</item>
         <item name="android:background">@drawable/button_number_selector</item>
     </style>
+
+
+    <!-- Sell Design -->
+    <style name="sell_text_size">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="sell_edit_text" parent="sell_text_size">
+        <item name="android:gravity">right</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+
 
 </resources>

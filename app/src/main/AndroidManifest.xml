@@ -22,6 +22,7 @@
             android:name=".SellActivity"
             android:label="@string/title_activity_sell"
             android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

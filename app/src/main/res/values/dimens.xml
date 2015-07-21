@@ -11,6 +11,7 @@
 
     <!-- Sell Activity dimen -->
     <dimen name="sell_activity_marginTop">10dp</dimen>
+    <dimen name="sell_calculate_button_padding">10dp</dimen>
 
     <!-- Currency List Activity & Fragment dimen -->
     <dimen name="add_button_height">70dp</dimen>

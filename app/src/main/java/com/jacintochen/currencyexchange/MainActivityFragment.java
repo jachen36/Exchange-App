@@ -10,13 +10,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jacintochen.currencyexchange.data.ExchangeContract;
@@ -63,9 +67,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private String mBank_Rate_Two_To_One;
     private String mMarket_Rate_Two_To_One;
 
-    // TODO: Need to transfer data from activity result and when the activity just started
     // TODO: See if there is a way to do default values
-    // TODO: Need to display the data onto the screen aftered doing the saved state.
 
     public MainActivityFragment() {
     }
@@ -99,18 +101,20 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mBank_Rate = (EditText) rootView.findViewById(R.id.bank_rate_edittext);
         mMarket_Rate = (EditText) rootView.findViewById(R.id.market_rate_edittext);
         mRate_TextView = (TextView) rootView.findViewById(R.id.exchange_percentage);
-        // TODO: Figure out how to remove focus after done is pressed. Probably use a dummy layout that is focusable
 
         // Calling refreshView before the listener prevent unnecessary calling
         // updateRatePercentage multiple times.
         refreshView();
         mBank_Rate.addTextChangedListener(new TextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
+            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+            @Override
             public void afterTextChanged(Editable s) {
                 if (enableUpdate) {
                     updateRatePercentage();
@@ -119,12 +123,15 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
         });
         mMarket_Rate.addTextChangedListener(new TextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
+            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+            @Override
             public void afterTextChanged(Editable s) {
                 if (enableUpdate) {
                     updateRatePercentage();
@@ -164,7 +171,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         // Prevent edittext view from updating values
         enableUpdate = false;
         Log.v(LOG_TAG, "refreshView called");
-        // TODO: Use currency position to determine which to display
+
         if (mCurrency_Position.equals(getString(R.string.position_one))){
             mStart_Currency_Title.setText(mCurrency_One);
             mEnd_Currency_Title.setText(mCurrency_Two);

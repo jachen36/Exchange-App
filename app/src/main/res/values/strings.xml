@@ -55,8 +55,8 @@
     <string name="menu_sell">Sell</string>
     <string name="title_activity_sell">SELL</string>
     <string name="currency_1">Foreign Currency</string>
-    <string name="buy_rate">Buy</string>
-    <string name="sell_rate">Sell</string>
+    <string name="buy_rate">Buy Rate</string>
+    <string name="sell_rate">Sell Rate</string>
     <string name="currency_2">Home Currency</string>
     <string name="difference_buy_sell">Difference</string>
     <string name="temp_zero">0</string>
