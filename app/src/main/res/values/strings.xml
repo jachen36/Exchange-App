@@ -1,4 +1,5 @@
 <resources>
+    <!-- TODO: Mark which thing is not needed for translation-->
     <string name="app_name">Exchange</string>
 
     <string name="content_authority">com.jacintochen.currencyexchange.data.ExchangeProvider</string>
@@ -58,11 +59,14 @@
     <string name="buy_rate">Buy Rate</string>
     <string name="sell_rate">Sell Rate</string>
     <string name="currency_2">Home Currency</string>
-    <string name="difference_buy_sell">Difference</string>
+    <string name="currency_2_hint">Value return </string>
     <string name="temp_zero">0</string>
     <string name="calculate">Calculate</string>
-    <string name="selling_cost">Cost</string>
-    <string name="selling_cost_result">$$$$$</string>
+    <string name="selling_cost">Gain/Lost</string>
+    <string name="selling_cost_hint">In Home Currency</string>
+    <string name="sell_foreign_error">Enter the amount to exchange</string>
+    <string name="sell_buy_error">Enter the purchasing rate of the foreign currency</string>
+    <string name="sell_sell_error">Enter the selling rate of the foreign currency</string>
 
     <!-- Saved currency list string -->
     <string name="menu_saved">Saved Currency List</string>
@@ -82,6 +86,9 @@
     <string name="add_add_button">Add</string>
     <string name="add_cancel_button">Cancel</string>
     <string name="add_saved_message">Saved Successful</string>
+    <string name="add_currency_error">Enter name of currency</string>
+    <string name="add_bank_error">Enter your purchased exchange rate</string>
+    <string name="add_market_error">Enter current market exchange rate</string>
 
 
     <!-- String for Testing-->

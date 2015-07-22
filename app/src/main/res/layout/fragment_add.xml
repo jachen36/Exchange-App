@@ -13,27 +13,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_currency_1"
-        android:textSize="22sp"/>
+        style="@style/add_text_size"/>
 
     <EditText
         android:id="@+id/add_currency_1_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        style="@style/add_edit_text"
         android:inputType="text"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_currency_2"
-        android:textSize="22sp"
+        style="@style/add_text_size"
         android:layout_marginTop="@dimen/add_fragment_marginTop"/>
 
     <EditText
         android:id="@+id/add_currency_2_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        style="@style/add_edit_text"
         android:inputType="text"/>
 
 
@@ -49,14 +49,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_bank_rate"
-            android:textSize="22sp"/>
+            style="@style/add_text_size"/>
 
         <EditText
             android:id="@+id/add_bank_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="22sp"
+            style="@style/add_edit_text"
             android:inputType="numberDecimal"/>
 
     </LinearLayout>
@@ -72,14 +72,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_market_rate"
-            android:textSize="22sp"/>
+            style="@style/add_text_size"/>
 
         <EditText
             android:id="@+id/add_market_rate_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="22sp"
+            style="@style/add_edit_text"
+            android:imeOptions="actionDone"
             android:inputType="numberDecimal"/>
 
     </LinearLayout>

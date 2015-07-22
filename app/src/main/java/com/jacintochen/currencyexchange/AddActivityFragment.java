@@ -54,8 +54,6 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
         switch(v.getId()){
             case R.id.add_submit_button:
                 save();
-                // TODO: If possible add a toast to tell user saved is complete. Maybe make a custom view!
-                getActivity().finish();
                 break;
             case R.id.add_cancel_button:
                 // Exit current activity
@@ -69,23 +67,56 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
         String currency_two = mCurrency_Two.getText().toString();
         String one_to_two_bank = mBank_rate.getText().toString();
         String one_to_two_market = mMarket_rate.getText().toString();
-        // TODO: Figure out how to deal with the last two columns
+
+        // Since they are unseen until the calculator. Default is zero
         String two_to_one_bank = "0";
         String two_to_one_market = "0";
 
-        ContentValues values = new ContentValues();
-        values.put(ExchangeContract.COLUMN_CURRENCY_ONE, currency_one);
-        values.put(ExchangeContract.COLUMN_CURRENCY_TWO, currency_two);
-        values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, one_to_two_bank);
-        values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,one_to_two_market);
-        values.put(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, two_to_one_bank);
-        values.put(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, two_to_one_market);
+        if (isLegal(currency_one, currency_two, one_to_two_bank, one_to_two_market)){
+            ContentValues values = new ContentValues();
+            values.put(ExchangeContract.COLUMN_CURRENCY_ONE, currency_one);
+            values.put(ExchangeContract.COLUMN_CURRENCY_TWO, currency_two);
+            values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, one_to_two_bank);
+            values.put(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,one_to_two_market);
+            values.put(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE, two_to_one_bank);
+            values.put(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE, two_to_one_market);
 
-        getActivity().getContentResolver().insert(ExchangeContract.CONTENT_URI, values);
+            getActivity().getContentResolver().insert(ExchangeContract.CONTENT_URI, values);
 
-        Toast.makeText(getActivity(),
-                getString(R.string.add_saved_message),
-                Toast.LENGTH_SHORT).show();
+            // Display a message to let user know the saved was successful
+            Toast.makeText(getActivity(),
+                    getString(R.string.add_saved_message),
+                    Toast.LENGTH_SHORT).show();
+
+            // The activity exit itself when the saved was successful
+            getActivity().finish();
+        }
+    }
+
+    private boolean isLegal(String one, String two, String bank, String market){
+        boolean result = true;
+
+        if (one.length() == 0){
+            result = false;
+            mCurrency_One.setError(getString(R.string.add_currency_error));
+        }
+
+        if (two.length() == 0){
+            result = false;
+            mCurrency_Two.setError(getString(R.string.add_currency_error));
+        }
+
+        if (bank.length() == 0 || bank == "."){
+            result = false;
+            mBank_rate.setError(getString(R.string.add_bank_error));
+        }
+
+        if (market.length() == 0 || market == "."){
+            result = false;
+            mMarket_rate.setError(getString(R.string.add_market_error));
+        }
+
+        return result;
     }
 
 }
