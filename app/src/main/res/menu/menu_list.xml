@@ -6,12 +6,13 @@
     <item
         android:id="@+id/menu_saved"
         android:title="@string/menu_saved"
-        android:icon="@android:drawable/ic_input_get"
+        android:icon="@drawable/ic_folder_special_white_36dp"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_sell"
         android:title="@string/menu_sell"
+        android:icon="@drawable/ic_local_atm_white_36dp"
         app:showAsAction="ifRoom"/>
 
 </menu>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -149,9 +150,17 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         });
     }
 
-    private void deleteExchange(Context context, long id, int position){
-        context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
+    private void deleteExchange(final Context context, final long id, int position){
+        // This remove view at position from the list
         notifyItemRemoved(position);
+
+        // In order for the animation to display, the delete for SQLite needs to be delayed
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
+            }
+        }, 350);
 
         // TODO: Do I need a notify change?
     }

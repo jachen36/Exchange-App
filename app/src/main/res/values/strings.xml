@@ -71,7 +71,7 @@
     <!-- Saved currency list string -->
     <string name="menu_saved">Saved Currency List</string>
     <string name="title_activity_currency_list">Exchange List</string>
-    <string name="list_add_button_title">Add Exchange</string>
+    <string name="list_add_button_title">Add New Exchange</string>
     <!-- Card view strings -->
     <string name="alertdialog_delete">Delete Exchange?</string>
     <string name="delete">delete</string>

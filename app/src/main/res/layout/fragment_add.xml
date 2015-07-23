@@ -57,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/add_edit_text"
+            android:maxLength="7"
             android:inputType="numberDecimal"/>
 
     </LinearLayout>
@@ -80,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/add_edit_text"
+            android:maxLength="7"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"/>
 
@@ -91,20 +93,24 @@
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/add_fragment_marginTop">
 
+        <!--TODO: add some margin between the buttons-->
         <Button
             android:id="@+id/add_submit_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_add_button"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:background="@drawable/button_main_selector"
+            android:layout_marginRight="10dp"/>
         <Button
             android:id="@+id/add_cancel_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/add_cancel_button"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:background="@drawable/button_cancel_selector"/>
 
     </LinearLayout>
 
