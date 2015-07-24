@@ -17,8 +17,10 @@
     <style name="calculator_currency_title" parent="primary_text">
         <item name="android:textSize">30sp</item>
         <item name="android:gravity">bottom</item>
+        <item name="android:maxLength">@integer/max_currency_name_length</item>
     </style>
 
+    <!-- TODO: Need to add max length value here-->
     <style name="calculator_currency_number" parent="primary_text">
         <item name="android:textSize">42sp</item>
     </style>
@@ -31,7 +33,7 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColorHint">@color/white_secondary</item>
         <item name="android:gravity">center</item>
-        <item name="android:maxLength">7</item>
+        <item name="android:maxLength">@integer/max_rate_length</item>
         <item name="android:hint">@string/rate</item>
         <item name="android:padding">@dimen/rate_edittext_padding</item>
         <item name="android:inputType">numberDecimal</item>

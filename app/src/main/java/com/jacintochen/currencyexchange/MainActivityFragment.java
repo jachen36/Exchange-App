@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,6 +57,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private boolean rateWasChanged;
     private boolean enableUpdate;
     // TODO: Check if maximum is reasonable
+    // TODO: Use Integer value from values folder
     private int maximum_number_length = 25;
     private int maximum_decimal = 2;
 
@@ -180,16 +182,16 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         Log.v(LOG_TAG, "refreshView called");
 
         if (mCurrency_Position.equals(getString(R.string.position_one))){
-            mStart_Currency_Title.setText(mCurrency_One);
-            mEnd_Currency_Title.setText(mCurrency_Two);
+            refreshViewHelper(mStart_Currency_Title, mCurrency_One);
+            refreshViewHelper(mEnd_Currency_Title, mCurrency_Two);
             Log.v(LOG_TAG, "Bank rate set_ONE");
             mBank_Rate.setText(mBank_Rate_One_To_Two);
             Log.v(LOG_TAG, "Market rate set_ONE");
             mMarket_Rate.setText(mMarket_Rate_One_To_Two);
         }
         else if (mCurrency_Position.equals(getString(R.string.position_two))){
-            mStart_Currency_Title.setText(mCurrency_Two);
-            mEnd_Currency_Title.setText(mCurrency_One);
+            refreshViewHelper(mStart_Currency_Title, mCurrency_Two);
+            refreshViewHelper(mEnd_Currency_Title, mCurrency_One);
             Log.v(LOG_TAG, "Bank rate set_TWO");
             mBank_Rate.setText(mBank_Rate_Two_To_One);
             Log.v(LOG_TAG, "Market rate set_TWO");
@@ -200,6 +202,18 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
         // Call updateRatePercentage once both bank and market are set
         updateRatePercentage();
+    }
+
+    // Set the currency title and determine text size
+    private void refreshViewHelper(TextView textView, String title){
+        if (title.length() <= 4){
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+        } else if (title.length() <= 6){
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+        } else {
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        }
+        textView.setText(title);
     }
 
     // Update the exchange data member variables for the calculator
@@ -473,6 +487,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                     double end = start * rate;
 
                     // TODO: Need to make a tester that prevent string that are too large for screen or change the decimal to use E
+                    // TODO: Change size of text when too large!
                     result = mNumberFormatter.format(end);
                     equalWasPressed = true;
 

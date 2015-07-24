@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="max_currency_name_length">8</integer>
+    <integer name="max_rate_length">7</integer>
+    <!--TODO: double check max calculator-->
+    <integer name="max_calculator_number_length">30</integer>
+    
+</resources>
