@@ -62,9 +62,7 @@ public class SellActivityFragment extends Fragment {
         String currency_one = mCurrency_One.getText().toString();
         String buy_rate = mBuy_Rate.getText().toString();
         String sell_rate = mSell_Rate.getText().toString();
-        boolean oneIsLegal;
-        boolean buyIsLegal;
-        boolean sellIsLegal;
+        boolean oneIsLegal, buyIsLegal, sellIsLegal;
 
         oneIsLegal = isLegal(mCurrency_One, currency_one, getString(R.string.sell_foreign_error));
         buyIsLegal = isLegal(mBuy_Rate, buy_rate, getString(R.string.sell_buy_error));
@@ -74,21 +72,37 @@ public class SellActivityFragment extends Fragment {
             // TODO: the parsing formatter needs to be optimized
             DecimalFormat formatter = new DecimalFormat("#.########");
             try {
-                Double dCurrency_One = formatter.parse(currency_one).doubleValue();
-                Double dBuy_Rate = formatter.parse(buy_rate).doubleValue();
-                Double dSell_Rate = formatter.parse(sell_rate).doubleValue();
+                double dCurrency_One = Double.parseDouble(currency_one);
+                float dBuy_Rate = Float.parseFloat(buy_rate);
+                float dSell_Rate = Float.parseFloat(sell_rate);
 
-                Double dCurrency_Two = dCurrency_One/dSell_Rate;
-                Double dCost = dCurrency_Two - (dCurrency_One/dBuy_Rate);
+                double dCurrency_Two = dCurrency_One/dSell_Rate;
+                double dCost = dCurrency_Two - (dCurrency_One/dBuy_Rate);
 
-                formatter.applyPattern("#,###.00");
+                String normal_pattern = "#,###.00";
+                String large_pattern = "#.########E0";
+
+                // The maximum string length that can be displayed
+                double max_value = 999999999999999999d;
+                double max_cost = 999999999d;
+
+                // If value is too large to display, they are truncated into exponents
+                if (dCurrency_Two < max_value){
+                    formatter.applyPattern(normal_pattern);
+                } else {
+                    formatter.applyPattern(large_pattern);
+                }
                 mCurrency_Two.setText(formatter.format(dCurrency_Two));
+
+                if (dCost < max_cost){
+                    formatter.applyPattern(normal_pattern);
+                } else {
+                    formatter.applyPattern(large_pattern);
+                }
                 mCost.setText(formatter.format(dCost));
 
-            } catch (ParseException parse){
-                Log.v(LOG_TAG, "Parsing error when calculating sell cost");
-            } catch (IllegalArgumentException arg){
-                Log.v(LOG_TAG, "Failed to format calculated result");
+            } catch (NumberFormatException numb){
+                Log.e(LOG_TAG, "Parsing error in function calculateResult. " + numb);
             }
         } else {
             mCost.setText(getString(R.string.temp_zero));
@@ -97,12 +111,10 @@ public class SellActivityFragment extends Fragment {
     }
 
     private boolean isLegal(EditText edit, String text, String error){
-
         if (text.length() == 0 || text == "." || text == "0"){
             edit.setError(error);
             return false;
         }
-        // TODO: Got to undo the error
         return true;
     }
 }

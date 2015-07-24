@@ -55,6 +55,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     // TODO: Check if there are unnecessary change to rateWasChange after adding enableUpdate
     private boolean rateWasChanged;
     private boolean enableUpdate;
+    // TODO: Check if maximum is reasonable
+    private int maximum_number_length = 25;
+    private int maximum_decimal = 2;
 
     // Exchange data for the calculator
     private SharedPreferences mPref;
@@ -68,6 +71,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private String mMarket_Rate_Two_To_One;
 
     // TODO: See if there is a way to do default values
+    // TODO: need to go back and find out if I used Double or double
 
     public MainActivityFragment() {
     }
@@ -84,14 +88,17 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         decimalPresent = false;
         equalWasPressed = false;
 
         // TODO: I might not need this decimalFormat if I am not using it for the start_currency
-        mNumberFormatter = new DecimalFormat("#,###.##");
+        mNumberFormatter = new DecimalFormat();
+        // TODO: Double check if maximum numbers are reasonable
+        mNumberFormatter.setMaximumFractionDigits(maximum_decimal);
+        mNumberFormatter.setGroupingSize(3);
+
 
         // Views that can change
         mStart_Currency_Title = (TextView) rootView.findViewById(R.id.start_currency_title);
@@ -372,7 +379,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 equal();
                 break;
             default:
-                Log.v(LOG_TAG, "The button was not recognized on the onClick function. Button id " + v.getId());
+                Log.e(LOG_TAG, "The button was not recognized on the onClick function. Button id " + v.getId());
                 throw new UnsupportedOperationException("Button not supported");
         }
     }
@@ -398,16 +405,26 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     // Remove the last number from mStart_Currency_textview
+    // TODO: Backspace does not reset comma placement
     private void backspace(){
         CharSequence textView = mStart_Currency_TextView.getText();
         int length = textView.length();
         if (length == 1){
             mStart_Currency_TextView.setText("0");
-        } else {
+        } else if (decimalPresent) {
             mStart_Currency_TextView.setText(textView.subSequence(0, length-1));
             if (textView.charAt(length-1) == '.'){
                 decimalPresent = false;
             }
+        } else {
+            String temp = textView.subSequence(0, length-1).toString();
+            temp = temp.replace(",", "");
+            try {
+                mStart_Currency_TextView.setText(mNumberFormatter.format(Long.parseLong(temp)));
+            } catch (NumberFormatException numb){
+                Log.e(LOG_TAG, "Error parsing string in function backspace. " + numb);
+            }
+
         }
     }
 
@@ -417,11 +434,23 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         if (equalWasPressed){clear();}
 
         String textView = mStart_Currency_TextView.getText().toString();
+        // When number reaches max length, no more number will be added
+        if (textView.length() >= maximum_number_length){return;}
+
         if (textView.length() == 1 && textView.equals("0")){
-            mStart_Currency_TextView.setText(num);
+            textView = num;
+        } else if (decimalPresent){
+            textView += num;
         } else {
-            mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + num);
+            textView = textView.replace(",", "");
+            textView = textView + num;
+            try {
+                textView = mNumberFormatter.format(Long.parseLong(textView));
+            } catch (NumberFormatException numb){
+                Log.e(LOG_TAG, "Error in function insert. Parsing error: " + num);
+            }
         }
+        mStart_Currency_TextView.setText(textView);
     }
 
     // Inserts the decimal point and change decimalPresent to true
@@ -432,33 +461,25 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     private void equal(){
         if (!equalWasPressed){
-            String result = "ERROR";
+            String result = "Enter Rate";
+            // equalWasPressed stay false if this function failed to display an output.
+            // because User probably wouldn't like to retype number
 
             if (legalRateInput){
                 try {
-                    DecimalFormat formatter = new DecimalFormat("#.######");
-
-                    Double start = formatter.parse(mStart_Currency_TextView.getText().toString()).doubleValue();
-                    Double rate = formatter.parse(mBank_Rate.getText().toString()).doubleValue();
-                    Double end = start * rate;
+                    String start_string = mStart_Currency_TextView.getText().toString().replace(",", "");
+                    double start = Double.parseDouble(start_string);
+                    float rate = Float.parseFloat(mBank_Rate.getText().toString());
+                    double end = start * rate;
 
                     // TODO: Need to make a tester that prevent string that are too large for screen or change the decimal to use E
-                    formatter.applyPattern("#,###.##");
-                    result = formatter.format(end);
+                    result = mNumberFormatter.format(end);
                     equalWasPressed = true;
 
-                } catch (ParseException par){
-                    Log.v(LOG_TAG, "Parsing error during calculating the end_currency. " + par);
-                } catch (IllegalArgumentException arg){
-                    Log.v(LOG_TAG, "Failed to format end result from equal. " + arg);
+                } catch (NumberFormatException numb){
+                    Log.e(LOG_TAG, "Parsing error in function equal. " + numb);
                 }
-
-            } else {
-                // equalWasPressed is false in this case because the user probably wouldn't like
-                // to reset what they've enter in the start_currency
-                result = "Enter Rate";
             }
-
             mEnd_Currency_TextView.setText(result);
         }
     }
@@ -484,14 +505,13 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         } else {
 
             try {
-                DecimalFormat rate_formatter = new DecimalFormat("#.######");
-                Double bank_double = rate_formatter.parse(bank).doubleValue();
-                Double market_double = rate_formatter.parse(market).doubleValue();
+                float bank_float = Float.parseFloat(bank);
+                float market_float = Float.parseFloat(market);
 
                 // Make sure both numbers are greater than zero
-                if (bank_double > 0 && market_double > 0){
+                if (bank_float > 0 && market_float > 0){
                     // Calculate the percent difference in the exchange rate between bank and market
-                    Double rate_difference = (bank_double/market_double) - 1;
+                    float rate_difference = (bank_float/market_float) - 1;
 
                     // Determine the text color
                     if (rate_difference >= 0 ){
@@ -500,23 +520,21 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                         textColor = getResources().getColor(R.color.red);
                     }
 
-                    // TODO: find a way to break out of the try once high and low is determine.
+                    // Determine the percent to display
                     if (rate_difference > 0.994){
                         result = "HIGH";
                     } else if (rate_difference < -0.994){
                         result = "LOW";
                     } else {
                         // Set maximum significant digits to 2 and minimum to 1 while converting it to percent
-                        rate_formatter.applyPattern("@#%");
+                        DecimalFormat rate_formatter = new DecimalFormat("@#%");
 
                         result = rate_formatter.format(rate_difference);
                     }
                     legalRateInput = true;
                 }
-            } catch (ParseException par) {
-                Log.v(LOG_TAG, "Parsing error. " + par);
-            } catch (IllegalArgumentException arg){
-                Log.v(LOG_TAG, "Failed to format the percentage from updateRatePercentage. " + arg);
+            } catch (NumberFormatException numb) {
+                Log.e(LOG_TAG, "Parsing error in function updateRatePercentage. " + numb);
             }
         }
 

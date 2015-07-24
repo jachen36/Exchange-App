@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/temp_zero"
             style="@style/sell_edit_text"
-            android:maxLength="20"/>
+            android:maxLength="18"/>
 
     </LinearLayout>
 
