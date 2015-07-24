@@ -11,23 +11,18 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jacintochen.currencyexchange.data.ExchangeContract;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 
 
 /**
@@ -53,12 +48,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private boolean decimalPresent;
     private boolean legalRateInput;
     private boolean equalWasPressed;
-    // TODO: Check if there are unnecessary change to rateWasChange after adding enableUpdate
     private boolean rateWasChanged;
     private boolean enableUpdate;
-    // TODO: Check if maximum is reasonable
     // TODO: Use Integer value from values folder
-    private int maximum_number_length = 25;
+    private int maximum_number_length = 17;
     private int maximum_decimal = 2;
 
     // Exchange data for the calculator
@@ -400,6 +393,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Swap the start and end currency
     private void switchExchange(){
+        // TODO: figure out why clear happens. what i want but idk how it does it.
         if (mCurrency_Position.equals(getString(R.string.position_two))){
             mCurrency_Position = getString(R.string.position_one);
         } else {
@@ -414,6 +408,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     private void clear(){
         mStart_Currency_TextView.setText("0");
         mEnd_Currency_TextView.setText("0");
+        setStartCurrencyTextSize();
+        setEndCurrencyTextSize();
         decimalPresent = false;
         equalWasPressed = false;
     }
@@ -438,8 +434,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             } catch (NumberFormatException numb){
                 Log.e(LOG_TAG, "Error parsing string in function backspace. " + numb);
             }
-
         }
+        setStartCurrencyTextSize();
     }
 
     // Insert the number pressed
@@ -465,12 +461,29 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
         }
         mStart_Currency_TextView.setText(textView);
+        setStartCurrencyTextSize();
     }
 
     // Inserts the decimal point and change decimalPresent to true
     private void insertDot(){
+        // When number reaches max length, no more number will be added
+        if (mStart_Currency_TextView.getText().length() >= maximum_number_length){return;}
         decimalPresent = true;
         mStart_Currency_TextView.setText(mStart_Currency_TextView.getText() + ".");
+        setStartCurrencyTextSize();
+    }
+
+    private void setStartCurrencyTextSize(){
+        int temp = mStart_Currency_TextView.getText().length();
+        int textSize;
+        if (temp <= 11){
+            textSize = 46;
+        } else if (temp <= 13){
+            textSize = 40;
+        } else {
+            textSize = 32;
+        }
+        mStart_Currency_TextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
     }
 
     private void equal(){
@@ -486,9 +499,13 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                     float rate = Float.parseFloat(mBank_Rate.getText().toString());
                     double end = start * rate;
 
-                    // TODO: Need to make a tester that prevent string that are too large for screen or change the decimal to use E
-                    // TODO: Change size of text when too large!
                     result = mNumberFormatter.format(end);
+
+                    // When the number's length is larger than 17, then it is converted to exponent
+                    if (result.length() > maximum_number_length){
+                        DecimalFormat formatter = new DecimalFormat("0.###E0");
+                        result = formatter.format(end);
+                    }
                     equalWasPressed = true;
 
                 } catch (NumberFormatException numb){
@@ -496,7 +513,19 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 }
             }
             mEnd_Currency_TextView.setText(result);
+            setEndCurrencyTextSize();
         }
+    }
+
+    private void setEndCurrencyTextSize(){
+        int temp = mEnd_Currency_TextView.getText().length();
+        int textSize;
+        if (temp <= 11){
+            textSize = 46;
+        } else {
+            textSize = 32;
+        }
+        mEnd_Currency_TextView.setTextSize(textSize);
     }
 
     // TODO: Change the color or the rate

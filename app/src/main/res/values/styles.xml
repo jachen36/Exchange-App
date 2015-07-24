@@ -22,7 +22,8 @@
 
     <!-- TODO: Need to add max length value here-->
     <style name="calculator_currency_number" parent="primary_text">
-        <item name="android:textSize">42sp</item>
+        <item name="android:textSize">46sp</item>
+        <item name="android:maxLength">@integer/max_calculator_number_length</item>
     </style>
 
     <style name="calculator_rate_title" parent="secondary_text">
