@@ -17,6 +17,7 @@
     <string name="bank">Bank</string>
     <string name="market">Market</string>
     <string name="exchange_rate">Rate</string>
+    <string name="temp_difference_rate">---</string>
     <string name="rate" translatable="false">#</string>
 
     <!--Button's text-->
