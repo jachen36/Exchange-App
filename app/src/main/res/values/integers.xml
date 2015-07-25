@@ -3,7 +3,6 @@
     
     <integer name="max_currency_name_length">8</integer>
     <integer name="max_rate_length">7</integer>
-    <!--TODO: double check max calculator-->
     <integer name="max_calculator_number_length">17</integer>
     
 </resources>

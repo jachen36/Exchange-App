@@ -21,8 +21,6 @@ import com.jacintochen.currencyexchange.data.ExchangeContract;
  * A placeholder fragment containing a simple view.
  */
 public class CurrencyListActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    //TODO: Add the add feature to this activity as well
-    // TODO: Figure out what happens when the activity stop while the loader is finishing up.
     // TODO: Figure out what to do when there are zero entry on the list. what happens to the calculator
 
     private int LOADER_ID = 0;
@@ -60,7 +58,6 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
         mRecyclerView.setAdapter(mAdapter);
         // This optimizes creating the cards. Change if not true
         mRecyclerView.setHasFixedSize(true);
-        // TODO: Figure out why layout manager is set dynamically
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Allow user to add new exchange by starting the Add Activity

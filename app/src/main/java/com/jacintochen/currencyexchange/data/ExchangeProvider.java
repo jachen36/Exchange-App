@@ -37,7 +37,6 @@ public class ExchangeProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mOpenHelper = new ExchangeDbHelper(getContext());
-        //TODO: Should I add an if function to see if a writeable database is return?
         return true;
     }
 
@@ -59,7 +58,6 @@ public class ExchangeProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
-        //TODO: Provider query
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
 
@@ -142,8 +140,6 @@ public class ExchangeProvider extends ContentProvider {
         }
     }
 
-
-    //TODO: put shutdown method here
     // You do not need to call this method. This is a method specifically to assist the testing
     // framework in running smoothly. You can read more at:
     @Override

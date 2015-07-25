@@ -76,9 +76,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                // TODO: cursor could be optimize like saving the cursor to the view, but require more memory but fast? IDK
                 cursor.moveToPosition(position);
-                Intent result = new Intent();
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(
                         context.getString(R.string.main_pref_values), Context.MODE_PRIVATE).edit();
@@ -101,28 +99,8 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                         cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
                 editor.apply();
 
-                Log.v(LOG_TAG, "At Adapter onClick.");
-                Log.v(LOG_TAG, "Column index are: " +
-                                INDEX_ID + " " +
-                                INDEX_CURRENCY_ONE + " " +
-                                INDEX_CURRENCY_TWO + " " +
-                                INDEX_BANK_RATE_ONE_TO_TWO + " " +
-                                INDEX_MARKET_RATE_ONE_TO_TWO + " " +
-                                INDEX_BANK_RATE_TWO_TO_ONE + " " +
-                                INDEX_MARKET_RATE_TWO_TO_ONE);
-                Log.v(LOG_TAG, "Cursor values input to preference are: " +
-                                cursor.getLong(INDEX_ID) + " : " +
-                                cursor.getString(INDEX_CURRENCY_ONE) + " : " +
-                                cursor.getString(INDEX_CURRENCY_TWO) + " : " +
-                                cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO) + " : " +
-                                cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO) + " : " +
-                                cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE) + " : " +
-                                cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
-                Log.v(LOG_TAG, "Exit Adapter");
-
                 // Send back the data to change the exchange of the calculator
-                // TODO: Test if I can have null for intent. Save some cpu.
-                ((Activity) context).setResult(Activity.RESULT_OK, result);
+                ((Activity) context).setResult(Activity.RESULT_OK, null);
 
                 // Return to main once data is set into preference
                 ((Activity) context).finish();
@@ -161,8 +139,6 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                 context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
             }
         }, 350);
-
-        // TODO: Do I need a notify change?
     }
 
     @Override

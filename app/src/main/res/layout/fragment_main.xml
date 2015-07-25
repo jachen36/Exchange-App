@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             style="@style/calculator_currency_title"/>
 
-        <!-- TODO: Try using autoFitTextView which seem pretty simply-->
         <TextView
             android:id="@+id/start_currency_textview"
             android:layout_width="0dp"
@@ -52,8 +51,6 @@
             android:layout_height="wrap_content"
             android:text="@string/bank"
             style="@style/calculator_rate_title"/>
-
-        <!-- TODO: Try to remove focus from the text after done is pressed -->
 
         <EditText
             android:id="@+id/bank_rate_edittext"
@@ -130,8 +127,6 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <!-- TODO: Nested weights are bad for performance so try relativelayout
-                 TODO: Also try using android studio's design tool to see how they program the layout-->
             <Button
                 android:id="@+id/button_seven"
                 android:layout_width="0dp"

@@ -26,7 +26,6 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
     private EditText mBank_rate;
     private EditText mMarket_rate;
 
-    // TODO: Error handling. make sure user fill everything out. Probably when user press add. and it checks.
     public AddActivityFragment() {
     }
 

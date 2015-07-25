@@ -10,16 +10,10 @@ import android.provider.BaseColumns;
  */
 public final class ExchangeContract implements BaseColumns{
 
-    // TODO: Put notes into noteable. Authority has to be the same as when you declare in manifest
     public static final String CONTENT_AUTHORITY = "com.jacintochen.currencyexchange.data.ExchangeProvider";
-
     public static final String PATH_EXCHANGE = "exchange";
-
     public static final Uri CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY + "/" + PATH_EXCHANGE);
-
     public static final String TABLE_NAME = "exchange";
-
-
 
     // Database Columns
     public static final String COLUMN_CURRENCY_ONE = "currency_one";
@@ -29,8 +23,6 @@ public final class ExchangeContract implements BaseColumns{
     public static final String COLUMN_BANK_RATE_TWO_TO_ONE = "bank_two_to_one";
     public static final String COLUMN_MARKET_RATE_TWO_TO_ONE = "market_two_to_one";
 
-
-    // TODO: Not sure which MIME type I should use?
     // Types
     public static final String CONTENT_TYPE =
             ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_EXCHANGE;

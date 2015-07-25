@@ -7,8 +7,6 @@
     android:orientation="vertical"
     tools:context="com.jacintochen.currencyexchange.AddActivityFragment">
 
-    <!--TODO: Change the cursor color to something darker.-->
-    <!--TODO: Set max text size -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +93,6 @@
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/add_fragment_marginTop">
 
-        <!--TODO: add some margin between the buttons-->
         <Button
             android:id="@+id/add_submit_button"
             android:layout_width="0dp"
