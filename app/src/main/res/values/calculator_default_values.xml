@@ -2,12 +2,12 @@
 <resources>
     <!-- This file contains the default values for the calculator-->
 
-    <string name="currency_position_default">one</string>
-    <string name="currency_one_default">USD</string>
-    <string name="currency_two_default">PESO</string>
-    <string name="bank_rate_one_to_two_default">14</string>
-    <string name="market_rate_one_to_two_default">15</string>
-    <string name="bank_rate_two_to_one_default">0</string>
-    <string name="market_rate_two_to_one_default">0.066667</string>
+    <string name="currency_position_default" translatable="false">one</string>
+    <string name="currency_one_default" translatable="false">USD</string>
+    <string name="currency_two_default" translatable="false">PESO</string>
+    <string name="bank_rate_one_to_two_default" translatable="false">14</string>
+    <string name="market_rate_one_to_two_default" translatable="false">15</string>
+    <string name="bank_rate_two_to_one_default" translatable="false">0</string>
+    <string name="market_rate_two_to_one_default" translatable="false">0.066667</string>
 
 </resources>

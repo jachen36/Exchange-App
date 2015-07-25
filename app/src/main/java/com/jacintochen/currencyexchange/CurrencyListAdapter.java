@@ -25,32 +25,17 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     private String LOG_TAG = CurrencyListAdapter.class.getSimpleName();
 
     private Cursor cursor;
-    //TODO: add project/index column so it is faster
-    private int INDEX_ID;
-    private int INDEX_CURRENCY_ONE;
-    private int INDEX_CURRENCY_TWO;
-    private int INDEX_BANK_RATE_ONE_TO_TWO;
-    private int INDEX_MARKET_RATE_ONE_TO_TWO;
-    private int INDEX_BANK_RATE_TWO_TO_ONE;
-    private int INDEX_MARKET_RATE_TWO_TO_ONE;
-
+    private final int INDEX_ID = 0;
+    private final int INDEX_CURRENCY_ONE = 1;
+    private final int INDEX_CURRENCY_TWO = 2;
+    private final int INDEX_BANK_RATE_ONE_TO_TWO = 3;
+    private final int INDEX_MARKET_RATE_ONE_TO_TWO = 4;
+    private final int INDEX_BANK_RATE_TWO_TO_ONE = 5;
+    private final int INDEX_MARKET_RATE_TWO_TO_ONE = 6;
 
     public void swapCursor(Cursor c){
         cursor = c;
-        // Once I have projection I do not need this
-        if (c != null){
-            // TODO: Remove this when i have the projections
-            INDEX_ID = c.getColumnIndex(ExchangeContract._ID);
-            INDEX_CURRENCY_ONE = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_ONE);
-            INDEX_CURRENCY_TWO = c.getColumnIndex(ExchangeContract.COLUMN_CURRENCY_TWO);
-            INDEX_BANK_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO);
-            INDEX_MARKET_RATE_ONE_TO_TWO = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO);
-            INDEX_BANK_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE);
-            INDEX_MARKET_RATE_TWO_TO_ONE = c.getColumnIndex(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE);
-
-        }
         notifyDataSetChanged();
-
     }
 
     //TODO: If possible use the viewType to disable the current displayed currency exchange

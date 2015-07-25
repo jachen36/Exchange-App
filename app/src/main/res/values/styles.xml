@@ -20,7 +20,6 @@
         <item name="android:maxLength">@integer/max_currency_name_length</item>
     </style>
 
-    <!-- TODO: Need to add max length value here-->
     <style name="calculator_currency_number" parent="primary_text">
         <item name="android:textSize">46sp</item>
         <item name="android:maxLength">@integer/max_calculator_number_length</item>

@@ -27,7 +27,6 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
     private RecyclerView mRecyclerView;
     private CurrencyListAdapter mAdapter;
 
-    // TODO: Need to finish the projection
     private final String[] projection = {
             ExchangeContract._ID,
             ExchangeContract.COLUMN_CURRENCY_ONE,
