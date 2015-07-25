@@ -105,12 +105,12 @@ public class AddActivityFragment extends Fragment implements View.OnClickListene
             mCurrency_Two.setError(getString(R.string.add_currency_error));
         }
 
-        if (bank.length() == 0 || bank == "."){
+        if (bank.length() == 0 || bank.equals(".")){
             result = false;
             mBank_rate.setError(getString(R.string.add_bank_error));
         }
 
-        if (market.length() == 0 || market == "."){
+        if (market.length() == 0 || market.equals(".")){
             result = false;
             mMarket_rate.setError(getString(R.string.add_market_error));
         }

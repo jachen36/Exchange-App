@@ -69,8 +69,6 @@ public class SellActivityFragment extends Fragment {
         sellIsLegal = isLegal(mSell_Rate, sell_rate, getString(R.string.sell_sell_error));
 
         if (oneIsLegal && buyIsLegal && sellIsLegal){
-            // TODO: the parsing formatter needs to be optimized
-            DecimalFormat formatter = new DecimalFormat("#.########");
             try {
                 double dCurrency_One = Double.parseDouble(currency_one);
                 float dBuy_Rate = Float.parseFloat(buy_rate);
@@ -80,12 +78,13 @@ public class SellActivityFragment extends Fragment {
                 double dCost = dCurrency_Two - (dCurrency_One/dBuy_Rate);
 
                 String normal_pattern = "#,###.00";
-                String large_pattern = "#.########E0";
+                String large_pattern = "0.####E0";
 
                 // The maximum string length that can be displayed
                 double max_value = 999999999999999999d;
                 double max_cost = 999999999d;
 
+                DecimalFormat formatter = new DecimalFormat();
                 // If value is too large to display, they are truncated into exponents
                 if (dCurrency_Two < max_value){
                     formatter.applyPattern(normal_pattern);
@@ -111,7 +110,7 @@ public class SellActivityFragment extends Fragment {
     }
 
     private boolean isLegal(EditText edit, String text, String error){
-        if (text.length() == 0 || text == "." || text == "0"){
+        if (text.length() == 0 || text.equals(".") || text.equals("0")){
             edit.setError(error);
             return false;
         }
