@@ -240,6 +240,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 return true;
             case R.id.menu_saved:
                 Intent saved = new Intent(getActivity(), CurrencyListActivity.class);
+                saved.putExtra(ExchangeContract._ID, mId);
                 startActivityForResult(saved, GET_EXCHANGE_REQUEST);
                 break;
         }
@@ -492,12 +493,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         String market = mMarket_Rate.getText().toString();
 
         // Make sure there are no illegal input such as empty or just a decimal point
-        if (bank.length() == 0 || market.length() == 0){
-
-        } else if (bank.equals(".") || market.equals(".")){
-
-        } else {
-
+        if (bank.length() != 0 || market.length() != 0 || !bank.equals(".") || !market.equals(".")){
             try {
                 float bank_float = Float.parseFloat(bank);
                 float market_float = Float.parseFloat(market);
@@ -535,7 +531,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         // Set text and textColor to exchange_percentage textview
         mRate_TextView.setText(result);
         mRate_TextView.setTextColor(textColor);
-
     }
 
     private void updateBankRate(){

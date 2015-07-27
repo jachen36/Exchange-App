@@ -48,6 +48,12 @@
         <item name="android:background">@drawable/button_number_selector</item>
     </style>
 
+    <!-- Currency List-->
+    <!-- Currency List item card view-->
+    <style name="card_view">
+        <item name="android:textSize">28sp</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <!-- Sell Design -->
     <style name="sell_text_size">

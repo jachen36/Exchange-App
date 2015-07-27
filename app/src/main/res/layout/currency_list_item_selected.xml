@@ -9,6 +9,9 @@
     android:layout_height="@dimen/card_view_height"
     android:layout_marginTop="@dimen/card_view_half_spacing"
     android:layout_marginBottom="@dimen/card_view_half_spacing"
+    android:clickable="false"
+    android:longClickable="false"
+    card_view:cardBackgroundColor="@color/blue"
     card_view:cardCornerRadius="4dp" >
 
     <LinearLayout

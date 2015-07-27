@@ -52,6 +52,8 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mAdapter = new CurrencyListAdapter();
+        long id = getActivity().getIntent().getLongExtra(ExchangeContract._ID, -1);
+        mAdapter.setSelectedExchange(id);
 
     }
 

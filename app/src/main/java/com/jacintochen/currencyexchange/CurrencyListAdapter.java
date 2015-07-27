@@ -32,6 +32,13 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     private final int INDEX_MARKET_RATE_ONE_TO_TWO = 4;
     private final int INDEX_BANK_RATE_TWO_TO_ONE = 5;
     private final int INDEX_MARKET_RATE_TWO_TO_ONE = 6;
+    private long selectedID;
+    private final int CARD_NORMAL = 0;
+    private final int CARD_SELECTED = 1;
+
+    public void setSelectedExchange(long id){
+        selectedID = id;
+    }
 
     public void swapCursor(Cursor c){
         cursor = c;
@@ -43,8 +50,12 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Log.v(LOG_TAG, "onCreateViewHolder called");
         // Create a new view
-        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_list_item, parent, false);
-
+        CardView v;
+        if (viewType == CARD_NORMAL){
+            v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_list_item, parent, false);
+        } else {
+            v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_list_item_selected, parent, false);
+        }
         // Wrap it with a view holder
         return new ViewHolder(v);
     }
@@ -59,40 +70,42 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         viewHolder.currency_2.setText(cursor.getString(INDEX_CURRENCY_TWO));
 
         // Clicking changes exchange for the calculator
-        viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                cursor.moveToPosition(position);
+        // However, if current exchange view is the same the calculator. Clicking is disabled.
+        if (id != selectedID){
+            viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    cursor.moveToPosition(position);
 
-                SharedPreferences.Editor editor = context.getSharedPreferences(
-                        context.getString(R.string.main_pref_values), Context.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = context.getSharedPreferences(
+                            context.getString(R.string.main_pref_values), Context.MODE_PRIVATE).edit();
 
-                // The currency position is reset to one every time
-                editor.putString(context.getString(R.string.mcurrency_position),
-                        context.getString(R.string.currency_position_default));
-                editor.putLong(ExchangeContract._ID, cursor.getLong(INDEX_ID));
-                editor.putString(ExchangeContract.COLUMN_CURRENCY_ONE,
-                        cursor.getString(INDEX_CURRENCY_ONE));
-                editor.putString(ExchangeContract.COLUMN_CURRENCY_TWO,
-                        cursor.getString(INDEX_CURRENCY_TWO));
-                editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
-                        cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO));
-                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
-                        cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO));
-                editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
-                        cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
-                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
-                        cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
-                editor.apply();
+                    // The currency position is reset to one every time
+                    editor.putString(context.getString(R.string.mcurrency_position),
+                            context.getString(R.string.currency_position_default));
+                    editor.putLong(ExchangeContract._ID, cursor.getLong(INDEX_ID));
+                    editor.putString(ExchangeContract.COLUMN_CURRENCY_ONE,
+                            cursor.getString(INDEX_CURRENCY_ONE));
+                    editor.putString(ExchangeContract.COLUMN_CURRENCY_TWO,
+                            cursor.getString(INDEX_CURRENCY_TWO));
+                    editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
+                            cursor.getString(INDEX_BANK_RATE_ONE_TO_TWO));
+                    editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
+                            cursor.getString(INDEX_MARKET_RATE_ONE_TO_TWO));
+                    editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
+                            cursor.getString(INDEX_BANK_RATE_TWO_TO_ONE));
+                    editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
+                            cursor.getString(INDEX_MARKET_RATE_TWO_TO_ONE));
+                    editor.apply();
 
-                // Send back the data to change the exchange of the calculator
-                ((Activity) context).setResult(Activity.RESULT_OK, null);
+                    // Send back the data to change the exchange of the calculator
+                    ((Activity) context).setResult(Activity.RESULT_OK, null);
 
-                // Return to main once data is set into preference
-                ((Activity) context).finish();
-            }
-        });
-
+                    // Return to main once data is set into preference
+                    ((Activity) context).finish();
+                }
+            });
+        }
         // Long click activates the delete alert dialog
         viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -122,6 +135,15 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     public long getItemId(int position){
         cursor.moveToPosition(position);
         return cursor.getLong(INDEX_ID);
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        cursor.moveToPosition(position);
+        if (cursor.getLong(INDEX_ID) == selectedID){
+            return CARD_SELECTED;
+        }
+        return CARD_NORMAL;
     }
 
     @Override

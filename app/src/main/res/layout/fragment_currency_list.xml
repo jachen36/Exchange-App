@@ -29,7 +29,8 @@
             android:textSize="40sp"
             android:layout_marginTop="@dimen/empty_top_margin"
             android:layout_marginLeft="@dimen/empty_side_margin"
-            android:layout_marginRight="@dimen/empty_side_margin"/>
+            android:layout_marginRight="@dimen/empty_side_margin"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/empty_image"
@@ -40,7 +41,8 @@
             android:layout_marginTop="@dimen/empty_image_top_margin"
             android:layout_marginLeft="@dimen/empty_side_margin"
             android:layout_marginRight="@dimen/empty_side_margin"
-            android:layout_marginBottom="@dimen/empty_bottom_margin"/>
+            android:layout_marginBottom="@dimen/empty_bottom_margin"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <Button
