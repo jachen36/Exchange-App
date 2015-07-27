@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/empty_top_margin"
+    android:layout_marginBottom="@dimen/empty_bottom_margin"
+    android:layout_marginLeft="@dimen/empty_side_margin"
+    android:layout_marginRight="@dimen/empty_side_margin">
+
+
+    <TextView
+        android:id="@+id/empty_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/empty_exchange_message"
+        android:textSize="40sp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/empty_message"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/empty_exchange"/>
+</RelativeLayout>

@@ -52,6 +52,9 @@
     <string name="sell_buy_error">Enter the purchasing rate of the foreign currency</string>
     <string name="sell_sell_error">Enter the selling rate of the foreign currency</string>
 
+    <!-- Empty List layout-->
+    <string name="empty_exchange_message">You must be new?</string>
+
     <!-- Saved currency list string -->
     <string name="menu_saved">Saved Currency List</string>
     <string name="title_activity_currency_list">Exchange List</string>

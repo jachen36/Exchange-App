@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.jacintochen.currencyexchange.data.ExchangeContract;
 
 /**
- * Created by Bokii on 7/8/2015.
+ * Created by Jacinto Chen on 7/8/2015.
  */
 public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>{
     private String LOG_TAG = CurrencyListAdapter.class.getSimpleName();
@@ -41,6 +41,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
     //TODO: If possible use the viewType to disable the current displayed currency exchange
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        Log.v(LOG_TAG, "onCreateViewHolder called");
         // Create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_list_item, parent, false);
 
