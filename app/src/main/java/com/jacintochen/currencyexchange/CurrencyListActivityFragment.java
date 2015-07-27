@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.jacintochen.currencyexchange.data.ExchangeContract;
 
@@ -27,6 +28,7 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
 
     private int LOADER_ID = 0;
     private RecyclerView mRecyclerView;
+    private RelativeLayout mEmptyView;
     private CurrencyListAdapter mAdapter;
 
     private final String[] projection = {
@@ -61,6 +63,8 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mEmptyView = (RelativeLayout) root.findViewById(R.id.empty_relative);
+
         // Allow user to add new exchange by starting the Add Activity
         Button add_exchange = (Button) root.findViewById(R.id.list_add_exchange_button);
         add_exchange.setOnClickListener(new View.OnClickListener(){
@@ -91,6 +95,11 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
         Log.v(LOG_TAG, "onLoadFinished was called");
+        if (cursor.getCount() == 0){
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
         mAdapter.swapCursor(cursor);
     }
 
