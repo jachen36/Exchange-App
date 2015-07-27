@@ -14,8 +14,9 @@
 
     <!-- Empty list layout -->
     <dimen name="empty_top_margin">50dp</dimen>
-    <dimen name="empty_bottom_margin">30dp</dimen>
+    <dimen name="empty_bottom_margin">20dp</dimen>
     <dimen name="empty_side_margin">20dp</dimen>
+    <dimen name="empty_image_top_margin">30dp</dimen>
 
     <!-- Currency List Activity & Fragment dimen -->
     <dimen name="list_activity_top_margin">2dp</dimen>

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/list_activity_side_margin"
@@ -8,22 +8,17 @@
     tools:context="com.jacintochen.currencyexchange.CurrencyListActivityFragment"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="430dp"
-        android:layout_alignParentTop="true"/>
 
     <RelativeLayout
-        android:id="@+id/empty_relative"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/empty_top_margin"
-        android:layout_marginBottom="@dimen/empty_bottom_margin"
-        android:layout_marginLeft="@dimen/empty_side_margin"
-        android:layout_marginRight="@dimen/empty_side_margin">
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"/>
 
         <TextView
             android:id="@+id/empty_message"
@@ -31,19 +26,25 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/empty_exchange_message"
-            android:textSize="40sp"/>
+            android:textSize="40sp"
+            android:layout_marginTop="@dimen/empty_top_margin"
+            android:layout_marginLeft="@dimen/empty_side_margin"
+            android:layout_marginRight="@dimen/empty_side_margin"/>
 
         <ImageView
+            android:id="@+id/empty_image"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/empty_message"
-            android:layout_marginTop="40dp"
-            android:src="@drawable/empty_exchange"/>
+            android:src="@drawable/empty_exchange"
+            android:layout_marginTop="@dimen/empty_image_top_margin"
+            android:layout_marginLeft="@dimen/empty_side_margin"
+            android:layout_marginRight="@dimen/empty_side_margin"
+            android:layout_marginBottom="@dimen/empty_bottom_margin"/>
     </RelativeLayout>
 
     <Button
         android:id="@+id/list_add_exchange_button"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/add_button_height"
         android:layout_marginTop="@dimen/add_button_margin_top"
@@ -51,4 +52,4 @@
         android:textSize="22sp"
         android:background="@drawable/button_main_selector"/>
 
-</RelativeLayout>
+</LinearLayout>

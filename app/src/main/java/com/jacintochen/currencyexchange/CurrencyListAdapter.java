@@ -114,18 +114,8 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         });
     }
 
-    private void deleteExchange(final Context context, final long id, int position){
-        // This remove view at position from the list
-        // TODO: Remove animation and handler!
-        notifyItemRemoved(position);
-
-        // In order for the animation to display, the delete for SQLite needs to be delayed
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
-                context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
-            }
-        }, 900);
+    private void deleteExchange(Context context, long id, int position){
+        context.getContentResolver().delete(ExchangeContract.buildExchangeUri(id), null, null);
     }
 
     @Override

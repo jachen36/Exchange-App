@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jacintochen.currencyexchange.data.ExchangeContract;
 
@@ -28,7 +30,8 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
 
     private int LOADER_ID = 0;
     private RecyclerView mRecyclerView;
-    private RelativeLayout mEmptyView;
+    private TextView mEmptyMSG;
+    private ImageView mEmptyIMG;
     private CurrencyListAdapter mAdapter;
 
     private final String[] projection = {
@@ -63,7 +66,8 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mEmptyView = (RelativeLayout) root.findViewById(R.id.empty_relative);
+        mEmptyMSG = (TextView) root.findViewById(R.id.empty_message);
+        mEmptyIMG = (ImageView) root.findViewById(R.id.empty_image);
 
         // Allow user to add new exchange by starting the Add Activity
         Button add_exchange = (Button) root.findViewById(R.id.list_add_exchange_button);
@@ -96,9 +100,11 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
         Log.v(LOG_TAG, "onLoadFinished was called");
         if (cursor.getCount() == 0){
-            mEmptyView.setVisibility(View.VISIBLE);
+            mEmptyMSG.setVisibility(View.VISIBLE);
+            mEmptyIMG.setVisibility(View.VISIBLE);
         } else {
-            mEmptyView.setVisibility(View.GONE);
+            mEmptyMSG.setVisibility(View.GONE);
+            mEmptyIMG.setVisibility(View.GONE);
         }
         mAdapter.swapCursor(cursor);
     }
