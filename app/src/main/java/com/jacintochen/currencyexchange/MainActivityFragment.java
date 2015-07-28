@@ -46,7 +46,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     // Logistic
     private DecimalFormat mNumberFormatter;
     private boolean decimalPresent;
-    private boolean legalRateInput;
+    private boolean legalBankRate;
+    private boolean legalMarketRate;
     private boolean equalWasPressed;
     private boolean rateWasChanged;
     private boolean enableUpdate;
@@ -252,6 +253,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             if (resultCode == Activity.RESULT_OK){
                 updateValues();
                 refreshView();
+                clear();
             }
         }
     }
@@ -356,6 +358,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         }
         SharedPreferences.Editor editor = mPref.edit();
         editor.putString(getString(R.string.mcurrency_position), mCurrency_Position);
+        editor.apply();
         refreshView();
     }
 
@@ -371,6 +374,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     // Remove the last number from mStart_Currency_textview
     private void backspace(){
+        // If equal was pressed, editing is not allowed
+        if (equalWasPressed){return;}
+
         CharSequence textView = mStart_Currency_TextView.getText();
         int length = textView.length();
         if (length == 1){
@@ -446,7 +452,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             // equalWasPressed stay false if this function failed to display an output.
             // because User probably wouldn't like to retype number
 
-            if (legalRateInput){
+            if (legalBankRate){
                 try {
                     String start_string = mStart_Currency_TextView.getText().toString().replace(",", "");
                     double start = Double.parseDouble(start_string);
@@ -486,7 +492,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         // Text that appears when either bank or market is empty
         String result = "---";
         int textColor = getResources().getColor(R.color.light_grey);
-        legalRateInput = false;
+        legalBankRate = false;
+        legalMarketRate = false;
 
         String bank = mBank_Rate.getText().toString();
         String market = mMarket_Rate.getText().toString();
@@ -497,8 +504,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 float bank_float = Float.parseFloat(bank);
                 float market_float = Float.parseFloat(market);
 
+                if (bank_float > 0){legalBankRate = true;}
+                if (market_float > 0){legalMarketRate = true;}
+
                 // Make sure both numbers are greater than zero
-                if (bank_float > 0 && market_float > 0){
+                if (legalBankRate && legalMarketRate){
                     // Calculate the percent difference in the exchange rate between bank and market
                     float rate_difference = (bank_float/market_float) - 1;
 
@@ -520,7 +530,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
                         result = rate_formatter.format(rate_difference);
                     }
-                    legalRateInput = true;
                 }
             } catch (NumberFormatException numb) {
                 Log.e(LOG_TAG, "Parsing error in function updateRatePercentage. " + numb);
@@ -533,7 +542,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateBankRate(){
-        if (legalRateInput){
+        if (legalBankRate){
             if (mCurrency_Position.equals(getString(R.string.position_one))){
                 mBank_Rate_One_To_Two = mBank_Rate.getText().toString();
             } else if (mCurrency_Position.equals(getString(R.string.position_two))){
@@ -544,7 +553,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     private void updateMarketRate(){
-        if (legalRateInput){
+        if (legalMarketRate){
             if (mCurrency_Position.equals(getString(R.string.position_one))){
                 mMarket_Rate_One_To_Two = mMarket_Rate.getText().toString();
             } else if (mCurrency_Position.equals(getString(R.string.position_two))){

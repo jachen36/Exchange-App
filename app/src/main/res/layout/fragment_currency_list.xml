@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/empty_exchange_message"
+            android:textColor="@color/dark_grey_light"
             android:textSize="40sp"
             android:layout_marginTop="@dimen/empty_top_margin"
             android:layout_marginLeft="@dimen/empty_side_margin"

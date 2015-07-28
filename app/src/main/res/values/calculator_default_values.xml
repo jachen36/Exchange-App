@@ -8,6 +8,6 @@
     <string name="bank_rate_one_to_two_default" translatable="false">14</string>
     <string name="market_rate_one_to_two_default" translatable="false">15</string>
     <string name="bank_rate_two_to_one_default" translatable="false">0</string>
-    <string name="market_rate_two_to_one_default" translatable="false">0.066667</string>
+    <string name="market_rate_two_to_one_default" translatable="false">0.06667</string>
 
 </resources>
