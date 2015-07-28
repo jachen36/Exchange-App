@@ -25,7 +25,6 @@ import com.jacintochen.currencyexchange.data.ExchangeContract;
  */
 public class CurrencyListActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private final String LOG_TAG = CurrencyListActivityFragment.class.getSimpleName();
-    // TODO: Figure out what to do when there are zero entry on the list. what happens to the calculator
 
     private int LOADER_ID = 0;
     private RecyclerView mRecyclerView;

@@ -43,7 +43,6 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         notifyDataSetChanged();
     }
 
-    //TODO: If possible use the viewType to disable the current displayed currency exchange
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Log.v(LOG_TAG, "onCreateViewHolder called");
