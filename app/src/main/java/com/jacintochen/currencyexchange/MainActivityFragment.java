@@ -78,7 +78,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mNumberFormatter.setMaximumFractionDigits(maximum_decimal);
         mNumberFormatter.setGroupingSize(3);
         maximum_number_length = getResources().getInteger(R.integer.max_calculator_number_length);
-
     }
 
     @Override
