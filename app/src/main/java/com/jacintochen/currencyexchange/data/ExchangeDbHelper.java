@@ -30,7 +30,16 @@ public class ExchangeDbHelper extends SQLiteOpenHelper {
                 ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE + " TEXT NOT NULL, " +
                 ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE + " TEXT NOT NULL);";
 
+        // TODO: Make default values as constant text in string xml
+        final String SQL_STARTING_USD_PESO = "INSERT INTO " + ExchangeContract.TABLE_NAME +
+                " VALUES(" +
+                "0, 'USD', 'PESO', '14', '15', '0.0714', '0.06667');";
+        final String SQL_STARTING_USD_BIG_MAC = "INSERT INTO " + ExchangeContract.TABLE_NAME + " VALUES(" +
+                "1, 'USD', 'BIG MAC', '3.99', '3.99', '0.2506', '0.2506');";
+
         db.execSQL(SQL_CREATE_EXCHANGE_TABLE);
+        db.execSQL(SQL_STARTING_USD_PESO);
+        db.execSQL(SQL_STARTING_USD_BIG_MAC);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){

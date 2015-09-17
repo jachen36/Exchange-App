@@ -53,7 +53,7 @@
     <string name="sell_sell_error">Enter the selling rate of the foreign currency</string>
 
     <!-- Empty List layout-->
-    <string name="empty_exchange_message">You must be new?</string>
+    <string name="empty_exchange_message">It is empty</string>
 
     <!-- Saved currency list string -->
     <string name="menu_saved">Saved Currency List</string>

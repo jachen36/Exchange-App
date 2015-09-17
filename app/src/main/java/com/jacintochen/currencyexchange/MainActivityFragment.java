@@ -262,18 +262,20 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onPause(){
         super.onPause();
         if (rateWasChanged){
-            if (mId > -1){
-                SharedPreferences.Editor editor = mPref.edit();
-                editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
-                        mBank_Rate_One_To_Two);
-                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
-                        mMarket_Rate_One_To_Two);
-                editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
-                        mBank_Rate_Two_To_One);
-                editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
-                        mMarket_Rate_Two_To_One);
-                editor.apply();
+            //Update preference
+            SharedPreferences.Editor editor = mPref.edit();
+            editor.putString(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO,
+                    mBank_Rate_One_To_Two);
+            editor.putString(ExchangeContract.COLUMN_MARKET_RATE_ONE_TO_TWO,
+                    mMarket_Rate_One_To_Two);
+            editor.putString(ExchangeContract.COLUMN_BANK_RATE_TWO_TO_ONE,
+                    mBank_Rate_Two_To_One);
+            editor.putString(ExchangeContract.COLUMN_MARKET_RATE_TWO_TO_ONE,
+                    mMarket_Rate_Two_To_One);
+            editor.apply();
 
+            //Update sqlite database
+            if (mId > -1){
                 // Update Exchange data in the database
                 ContentValues values = new ContentValues();
                 values.put(ExchangeContract.COLUMN_BANK_RATE_ONE_TO_TWO, mBank_Rate_One_To_Two);
@@ -284,10 +286,9 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 getActivity().getContentResolver().update(
                         ExchangeContract.buildExchangeUri(mId),
                         values, null, null);
-
-                // New changes has been saved so reset rateWasChanged to false
-                rateWasChanged = false;
             }
+            // New changes has been saved so reset rateWasChanged to false
+            rateWasChanged = false;
         }
     }
 

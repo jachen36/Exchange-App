@@ -67,7 +67,7 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
         viewHolder.currency_2.setText(cursor.getString(INDEX_CURRENCY_TWO));
 
         // Clicking changes exchange for the calculator
-        // However, if current exchange view is the same the calculator. Clicking is disabled.
+        // However, if current exchange view is the same the calculator. Clicking and long click are disabled.
         if (id != selectedID){
             viewHolder.cardView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -102,26 +102,27 @@ public class CurrencyListAdapter extends RecyclerView.Adapter<CurrencyListAdapte
                     ((Activity) context).finish();
                 }
             });
+
+            // Long click activates the delete alert dialog
+            viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.alertdialog_delete)
+                            .setCancelable(true)
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setPositiveButton(R.string.delete,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            deleteExchange(context, id, position);
+                                        }
+                                    })
+                            .show();
+                    return true;
+                }
+            });
         }
-        // Long click activates the delete alert dialog
-        viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-           public boolean onLongClick(View view){
-               AlertDialog.Builder builder = new AlertDialog.Builder(context);
-               builder.setTitle(R.string.alertdialog_delete)
-                       .setCancelable(true)
-                       .setNegativeButton(android.R.string.cancel, null)
-                       .setPositiveButton(R.string.delete,
-                               new DialogInterface.OnClickListener(){
-                                   @Override
-                                   public void onClick(DialogInterface dialogInterface, int i){
-                                       deleteExchange(context, id, position);
-                                   }
-                               })
-                       .show();
-               return true;
-           }
-        });
     }
 
     private void deleteExchange(Context context, long id, int position){
