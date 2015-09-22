@@ -17,7 +17,7 @@ public class ExchangeDbHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "exchange.db";
 
     // Default values when starting the app for the first time
-    final String USD_TO_PESO = "'USD', 'PESO', '14', '15', '0.0714', '0.06667'";
+    final String USD_TO_PESO = "'USD', 'PESO', '14', '15', '0.06', '0.06667'";
     final String USD_TO_BIGMAC = "'USD', 'BIG MAC', '3.99', '3.99', '0.2506', '0.2506'";
 
     public ExchangeDbHelper(Context context){

@@ -28,8 +28,6 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
 
     private int LOADER_ID = 0;
     private RecyclerView mRecyclerView;
-    private TextView mEmptyMSG;
-    private ImageView mEmptyIMG;
     private CurrencyListAdapter mAdapter;
 
     private final String[] projection = {
@@ -66,9 +64,6 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mEmptyMSG = (TextView) root.findViewById(R.id.empty_message);
-        mEmptyIMG = (ImageView) root.findViewById(R.id.empty_image);
-
         // Allow user to add new exchange by starting the Add Activity
         Button add_exchange = (Button) root.findViewById(R.id.list_add_exchange_button);
         add_exchange.setOnClickListener(new View.OnClickListener(){
@@ -97,16 +92,7 @@ public class CurrencyListActivityFragment extends Fragment implements LoaderMana
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
-        Log.v(LOG_TAG, "onLoadFinished was called");
-        if (cursor.getCount() == 0){
-            mEmptyMSG.setVisibility(View.VISIBLE);
-            mEmptyIMG.setVisibility(View.VISIBLE);
-        } else {
-            mEmptyMSG.setVisibility(View.GONE);
-            mEmptyIMG.setVisibility(View.GONE);
-        }
-        mAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){mAdapter.swapCursor(cursor);
     }
 
     @Override
